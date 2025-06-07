@@ -7,11 +7,15 @@ import { resolve } from "node:path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/edh-mm",
   plugins: [
     TanStackRouterVite({ autoCodeSplitting: true }),
     viteReact(),
     tailwindcss(),
   ],
+  build: {
+    outDir: "./dist",
+  },
   test: {
     globals: true,
     environment: "jsdom",
