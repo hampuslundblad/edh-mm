@@ -56,15 +56,19 @@ export const initalPlayers: Array<Player> = [
     id: "2",
     deck: [
       // Bracket 2
-      { name: "Token precon (?)", bracket: Bracket.Two },
-      { name: "Karter", bracket: Bracket.Two },
-      { name: "The council of four, Claw of Progress", bracket: Bracket.Two },
+
+      { name: "Kardor", bracket: Bracket.Two },
       // Bracket 3
-      { name: "Albin's deck", bracket: Bracket.Three },
-      // Bracket 3+
-      { name: "Xyris, the writhing storm", bracket: Bracket.ThreePlus },
+      { name: "Token precon", bracket: Bracket.Three },
+      { name: "Xyris, the writhing storm", bracket: Bracket.Three} ,
+      { name: "5C Omnath", bracket: Bracket.Three },
+  { name: "Ur dragon", bracket: Bracket.Three },
+ { name: "Ninjor ", bracket: Bracket.Three },
+ { name: "Enchantress", bracket: Bracket.Three },
+// 3+ 
       { name: "Hazezon, Shaper of Sand", bracket: Bracket.ThreePlus },
-    ],
+   
+ ],
   },
   {
     name: "Martin",
@@ -77,6 +81,7 @@ export const initalPlayers: Array<Player> = [
       { name: "Hampus och Martin (Partners)", bracket: Bracket.Three },
       { name: "Prosper tome-bound (3+?)", bracket: Bracket.ThreePlus },
       // Bracket 3+
+ { name: "Abzan landfall", bracket: Bracket.ThreePlus },
     ],
   },
   {
