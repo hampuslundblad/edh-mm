@@ -85,6 +85,7 @@ export const initalPlayers: Array<Player> = [
     deck: [
       // Bracket 2
       { name: "Sultai Dragon Precon", bracket: Bracket.Two },
+        {name:"Kadena", bracket: Bracket.Two },
       // Bracket 3
       { name: "ZURGO HELMSMASHER", bracket: Bracket.Three },
       { name: "Tyvarr, the Bellicose", bracket: Bracket.Three },
