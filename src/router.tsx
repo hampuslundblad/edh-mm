@@ -2,10 +2,11 @@ import { createRouter } from "@tanstack/react-router"
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen"
+import { BASE_PATH } from "./config"
 
 // Create a new router instance
 export const router = createRouter({
-  basepath: "/edh-mm",
+  basepath: `${BASE_PATH}`,
   routeTree,
   context: {},
   defaultPreload: "intent",

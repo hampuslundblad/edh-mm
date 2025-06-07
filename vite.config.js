@@ -4,10 +4,10 @@ import tailwindcss from "@tailwindcss/vite"
 
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite"
 import { resolve } from "node:path"
-
+import { BASE_PATH } from "./src/config"
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/edh-mm",
+  base: `${BASE_PATH}`,
   plugins: [
     TanStackRouterVite({ autoCodeSplitting: true }),
     viteReact(),
