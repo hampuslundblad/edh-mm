@@ -2,7 +2,6 @@ import { createHashHistory, createRouter } from "@tanstack/react-router"
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen"
-import { BASE_PATH } from "./config"
 
 
 // use hash routing 
