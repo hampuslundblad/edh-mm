@@ -80,6 +80,7 @@ export const initalPlayers: Array<Player> = [
       // Bracket 3
       { name: "Martin the planeswalker", bracket: Bracket.Three },
       { name: "Hampus och Martin (Partners)", bracket: Bracket.Three },
+{ name: "Eldrazi", bracket: Bracket.Three },
 
       { name: "Prosper tome-bound (3+?)", bracket: Bracket.ThreePlus },
       // Bracket 3+
