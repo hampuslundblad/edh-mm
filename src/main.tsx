@@ -5,9 +5,9 @@ import { RouterProvider } from "@tanstack/react-router"
 import "./styles.css"
 import { QueryClientProvider } from "@tanstack/react-query"
 import reportWebVitals from "./reportWebVitals.ts"
+import { PlayersProvider } from "./contexts/playersContext.tsx"
 import { router } from "@/router.tsx"
 import { queryClient } from "@/queryClient.tsx"
-import { PlayersProvider } from "./contexts/playersContext.tsx"
 
 // Render the app
 const rootElement = document.getElementById("app")

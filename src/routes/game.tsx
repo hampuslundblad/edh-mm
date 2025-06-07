@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
+import { ChevronsUpDown } from "lucide-react"
 import { initalPlayers, numbersOfDecksWithinBracket } from "@/utils/players"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +19,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { ChevronsUpDown } from "lucide-react"
 
 export const Route = createFileRoute("/game")({
   component: RouteComponent,

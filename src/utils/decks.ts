@@ -1,7 +1,3 @@
-import { initalPlayers } from "./players"
-
-//export type Bracket = "1" | "2" | "3" | "3+" | "4" | "5"
-
 export enum Bracket {
   One = "1",
   Two = "2",
@@ -11,12 +7,12 @@ export enum Bracket {
   Five = "5",
 }
 
-type Deck = {
-  id: string
-  name: string
-  bracket: Bracket
-  belongsTo: string // Player ID
-}
+// type Deck = {
+//   id: string
+//   name: string
+//   bracket: Bracket
+//   belongsTo: string // Player ID
+// }
 // export const allDecks: Array<Deck> = initalPlayers.flatMap((player) =>
 //   player.deck.map((deck) => ({
 //     id: `${player.id}-${deck.name}`,
