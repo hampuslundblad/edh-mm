@@ -10,7 +10,7 @@ const hashHistory = createHashHistory()
 
 // Create a new router instance
 export const router = createRouter({
-  basepath: "/"
+  basepath: "/",
   routeTree,
   history: hashHistory,
   context: {},
