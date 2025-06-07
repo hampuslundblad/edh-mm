@@ -76,9 +76,11 @@ export const initalPlayers: Array<Player> = [
     deck: [
       // Bracket 2
       { name: "Mardu Precon", bracket: Bracket.Two },
+  { name: "Edgar Markov", bracket: Bracket.Two },
       // Bracket 3
       { name: "Martin the planeswalker", bracket: Bracket.Three },
       { name: "Hampus och Martin (Partners)", bracket: Bracket.Three },
+
       { name: "Prosper tome-bound (3+?)", bracket: Bracket.ThreePlus },
       // Bracket 3+
  { name: "Abzan landfall", bracket: Bracket.ThreePlus },
