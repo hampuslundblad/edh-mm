@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PlayersImport } from './routes/players'
+import { Route as BracketInfoImport } from './routes/bracket-info'
 import { Route as IndexImport } from './routes/index'
 import { Route as PlayerIdImport } from './routes/player.$id'
 
@@ -20,6 +21,12 @@ import { Route as PlayerIdImport } from './routes/player.$id'
 const PlayersRoute = PlayersImport.update({
   id: '/players',
   path: '/players',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BracketInfoRoute = BracketInfoImport.update({
+  id: '/bracket-info',
+  path: '/bracket-info',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/bracket-info': {
+      id: '/bracket-info'
+      path: '/bracket-info'
+      fullPath: '/bracket-info'
+      preLoaderRoute: typeof BracketInfoImport
+      parentRoute: typeof rootRoute
+    }
     '/players': {
       id: '/players'
       path: '/players'
@@ -67,12 +81,14 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
   '/player/$id': typeof PlayerIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
   '/player/$id': typeof PlayerIdRoute
 }
@@ -80,27 +96,30 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
   '/player/$id': typeof PlayerIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/players' | '/player/$id'
+  fullPaths: '/' | '/bracket-info' | '/players' | '/player/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/players' | '/player/$id'
-  id: '__root__' | '/' | '/players' | '/player/$id'
+  to: '/' | '/bracket-info' | '/players' | '/player/$id'
+  id: '__root__' | '/' | '/bracket-info' | '/players' | '/player/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BracketInfoRoute: typeof BracketInfoRoute
   PlayersRoute: typeof PlayersRoute
   PlayerIdRoute: typeof PlayerIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BracketInfoRoute: BracketInfoRoute,
   PlayersRoute: PlayersRoute,
   PlayerIdRoute: PlayerIdRoute,
 }
@@ -116,12 +135,16 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/bracket-info",
         "/players",
         "/player/$id"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/bracket-info": {
+      "filePath": "bracket-info.tsx"
     },
     "/players": {
       "filePath": "players.tsx"
