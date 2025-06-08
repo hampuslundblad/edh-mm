@@ -1,13 +1,17 @@
-import { createRouter } from "@tanstack/react-router"
+import { createHashHistory, createRouter } from "@tanstack/react-router"
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen"
-import { BASE_PATH } from "./config"
+
+
+// use hash routing 
+const hashHistory = createHashHistory() 
 
 // Create a new router instance
 export const router = createRouter({
-  basepath: `${BASE_PATH}`,
+  basepath: "/",
   routeTree,
+  history: hashHistory,
   context: {},
   defaultPreload: "intent",
   scrollRestoration: true,
