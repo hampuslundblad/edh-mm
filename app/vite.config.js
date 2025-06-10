@@ -7,7 +7,7 @@ import { resolve } from "node:path"
 import { BASE_PATH } from "./src/config"
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: `${BASE_PATH}`,
+  // base: `${BASE_PATH}`,
   plugins: [
     TanStackRouterVite({ autoCodeSplitting: true }),
     viteReact(),
