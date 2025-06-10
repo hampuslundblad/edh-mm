@@ -1,11 +1,7 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { ChevronsUpDown } from "lucide-react"
-import {
-  initalPlayers,
-  numbersOfDecksWithinBracket,
-  type Deck,
-} from "@/utils/players"
+import { initalPlayers, numbersOfDecksWithinBracket } from "@/utils/players"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -48,34 +44,6 @@ function RouteComponent() {
       const bracketDecks = player.deck.filter(
         (deck) => deck.bracket === selectedBracket,
       )
-      const filter = (deck: Deck) =>
-        deck.bracket === Bracket.Three || deck.bracket === Bracket.ThreePlus
-      let filteredDecks = bracketDecks
-
-      if (rules.disableBracketRestrictions) {
-        // Use all decks for the player
-        filteredDecks = player.deck
-      } else if (
-        rules.combineBracket2And3 &&
-        (selectedBracket === Bracket.Two || selectedBracket === Bracket.Three)
-      ) {
-        // Combine bracket 2 and 3 decks
-        filteredDecks = player.deck.filter(
-          (deck) =>
-            deck.bracket === Bracket.Two || deck.bracket === Bracket.Three,
-        )
-      } else if (
-        rules.combineBracket3And3Plus &&
-        (selectedBracket === Bracket.Three ||
-          selectedBracket === Bracket.ThreePlus)
-      ) {
-        // Combine bracket 3 and 3+ decks
-        filteredDecks = player.deck.filter(
-          (deck) =>
-            deck.bracket === Bracket.Three ||
-            deck.bracket === Bracket.ThreePlus,
-        )
-      }
 
       // Pick a random deck from the filtered list
       const chosen =
