@@ -1,0 +1,22 @@
+name: Frontend - Build & push container to GHCR
+
+on:
+  push:
+    branches: main
+    paths:
+      - "app/**"
+      - ".github/workflows/publish-frontend.yaml"
+  workflow_dispatch:
+
+jobs:
+  publish_image:
+    uses: ./.github/workflows/reusable-publish-image.yaml
+    with:
+      registry: ghcr.io
+      image_name: hampuslundblad/edh-mm-app
+      context: ./app
+    permissions: # Needs same permissions as the reusable-publish-image.yaml, might be a better way to do this
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write

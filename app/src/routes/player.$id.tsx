@@ -1,6 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router"
 import { PlayersApi } from "@/api/player"
 import { Button } from "@/components/ui/button"
-import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/player/$id")({
   component: RouteComponent,
@@ -17,15 +17,15 @@ export const Route = createFileRoute("/player/$id")({
 
 function RouteComponent() {
   const player = Route.useLoaderData()
-  const playerHasDecks = player?.deck && player.deck.length > 0
+  const playerHasDecks = player.deck.length > 0
   return (
     <div className="flex flex-col gap-4 p-2">
-      Hello "{player?.name}!"
+      Hello "{player.name}!"
       <h1> Decks </h1>
       <Button className="self-start"> Add deck</Button>
       <div className="flex flex-col gap-2">
         {playerHasDecks &&
-          player?.deck.map((deck, index) => (
+          player.deck.map((deck, index) => (
             <div
               key={deck.name + index}
               className="p-2 border rounded md:w-1/3"

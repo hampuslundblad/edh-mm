@@ -1,7 +1,11 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { ChevronsUpDown } from "lucide-react"
-import { initalPlayers, numbersOfDecksWithinBracket } from "@/utils/players"
+import {
+  initalPlayers,
+  numbersOfDecksWithinBracket,
+  type Deck,
+} from "@/utils/players"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -26,12 +30,17 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   const [selectedBracket, setSelectedBracket] = useState<Bracket>(Bracket.Two)
-
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
   const [chosenDecks, setChosenDecks] = useState<
     Array<{ player: string; deck: string }>
   >([])
+
+  // Use useState instead of useRef for rules
+  const [rules, setRules] = useState({
+    combineBracket2And3: false,
+    combineBracket3And3Plus: false,
+    disableBracketRestrictions: false,
+  })
 
   function handleCreateGame() {
     const decks = initalPlayers.map((player) => {
@@ -39,6 +48,35 @@ function RouteComponent() {
       const bracketDecks = player.deck.filter(
         (deck) => deck.bracket === selectedBracket,
       )
+      const filter = (deck: Deck) =>
+        deck.bracket === Bracket.Three || deck.bracket === Bracket.ThreePlus
+      let filteredDecks = bracketDecks
+
+      if (rules.disableBracketRestrictions) {
+        // Use all decks for the player
+        filteredDecks = player.deck
+      } else if (
+        rules.combineBracket2And3 &&
+        (selectedBracket === Bracket.Two || selectedBracket === Bracket.Three)
+      ) {
+        // Combine bracket 2 and 3 decks
+        filteredDecks = player.deck.filter(
+          (deck) =>
+            deck.bracket === Bracket.Two || deck.bracket === Bracket.Three,
+        )
+      } else if (
+        rules.combineBracket3And3Plus &&
+        (selectedBracket === Bracket.Three ||
+          selectedBracket === Bracket.ThreePlus)
+      ) {
+        // Combine bracket 3 and 3+ decks
+        filteredDecks = player.deck.filter(
+          (deck) =>
+            deck.bracket === Bracket.Three ||
+            deck.bracket === Bracket.ThreePlus,
+        )
+      }
+
       // Pick a random deck from the filtered list
       const chosen =
         bracketDecks[Math.floor(Math.random() * bracketDecks.length)]
@@ -73,13 +111,40 @@ function RouteComponent() {
 
           <CollapsibleContent className="flex flex-col gap-2">
             <div className="rounded-md border px-4 py-2 text-sm">
-              <p> Kombinera bracket 2 och 3?</p> <Switch />
+              <p> Kombinera bracket 2 och 3?</p>{" "}
+              <Switch
+                checked={rules.combineBracket2And3}
+                onCheckedChange={(checked) =>
+                  setRules((prev) => ({
+                    ...prev,
+                    combineBracket2And3: checked,
+                  }))
+                }
+              />
             </div>
             <div className="rounded-md border px-4 py-2 text-sm">
-              <p> Kombinera bracket 3 och 3+?</p> <Switch />
+              <p> Kombinera bracket 3 och 3+?</p>{" "}
+              <Switch
+                checked={rules.combineBracket3And3Plus}
+                onCheckedChange={(checked) =>
+                  setRules((prev) => ({
+                    ...prev,
+                    combineBracket3And3Plus: checked,
+                  }))
+                }
+              />
             </div>
             <div className="rounded-md border px-4 py-2 text-sm">
-              <p> Stäng av bracket restriktioner</p> <Switch />
+              <p> Stäng av bracket restriktioner</p>{" "}
+              <Switch
+                checked={rules.disableBracketRestrictions}
+                onCheckedChange={(checked) =>
+                  setRules((prev) => ({
+                    ...prev,
+                    disableBracketRestrictions: checked,
+                  }))
+                }
+              />
             </div>
           </CollapsibleContent>
         </Collapsible>

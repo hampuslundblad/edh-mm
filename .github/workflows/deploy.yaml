@@ -24,12 +24,12 @@ jobs:
           node-version: "22"
 
       - name: Install dependencies
-        working-directory: .
+        working-directory: ./app
         run: |
           npm ci
 
       - name: Build project
-        working-directory: .
+        working-directory: ./app
         env:
           BASE_URL: /
         run: npm run build

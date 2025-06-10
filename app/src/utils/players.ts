@@ -1,6 +1,6 @@
 import { Bracket } from "./decks"
 
-type Deck = {
+export type Deck = {
   name: string
   bracket: Bracket
 }
@@ -60,15 +60,14 @@ export const initalPlayers: Array<Player> = [
       { name: "Kardor", bracket: Bracket.Two },
       // Bracket 3
       { name: "Token precon", bracket: Bracket.Three },
-      { name: "Xyris, the writhing storm", bracket: Bracket.Three} ,
+      { name: "Xyris, the writhing storm", bracket: Bracket.Three },
       { name: "5C Omnath", bracket: Bracket.Three },
-  { name: "Ur dragon", bracket: Bracket.Three },
- { name: "Ninjor ", bracket: Bracket.Three },
- { name: "Enchantress", bracket: Bracket.Three },
-// 3+ 
+      { name: "Ur dragon", bracket: Bracket.Three },
+      { name: "Ninjor ", bracket: Bracket.Three },
+      { name: "Enchantress", bracket: Bracket.Three },
+      // 3+
       { name: "Hazezon, Shaper of Sand", bracket: Bracket.ThreePlus },
-   
- ],
+    ],
   },
   {
     name: "Martin",
@@ -76,15 +75,15 @@ export const initalPlayers: Array<Player> = [
     deck: [
       // Bracket 2
       { name: "Mardu Precon", bracket: Bracket.Two },
-  { name: "Edgar Markov", bracket: Bracket.Two },
+      { name: "Edgar Markov", bracket: Bracket.Two },
       // Bracket 3
       { name: "Martin the planeswalker", bracket: Bracket.Three },
       { name: "Hampus och Martin (Partners)", bracket: Bracket.Three },
-{ name: "Eldrazi", bracket: Bracket.Three },
+      { name: "Eldrazi", bracket: Bracket.Three },
 
       { name: "Prosper tome-bound (3+?)", bracket: Bracket.ThreePlus },
       // Bracket 3+
- { name: "Abzan landfall", bracket: Bracket.ThreePlus },
+      { name: "Abzan landfall", bracket: Bracket.ThreePlus },
     ],
   },
   {
@@ -93,7 +92,7 @@ export const initalPlayers: Array<Player> = [
     deck: [
       // Bracket 2
       { name: "Sultai Dragon Precon", bracket: Bracket.Two },
-        {name:"Kadena", bracket: Bracket.Two },
+      { name: "Kadena", bracket: Bracket.Two },
       // Bracket 3
       { name: "ZURGO HELMSMASHER", bracket: Bracket.Three },
       { name: "Tyvarr, the Bellicose", bracket: Bracket.Three },
