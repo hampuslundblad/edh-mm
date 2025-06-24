@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hampuslundblad.edh.deck.Bracket;
+import com.hampuslundblad.edh.deck.Deck;
+
 @RestController
 public class PlayerController {
 List<Player> players =  List.of(new Player("Adam", List.of(

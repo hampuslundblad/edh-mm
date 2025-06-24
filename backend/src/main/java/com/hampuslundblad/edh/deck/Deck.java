@@ -1,4 +1,4 @@
-package com.hampuslundblad.edh.player;
+package com.hampuslundblad.edh.deck;
 
 public class Deck {
     private String name;
@@ -31,4 +31,30 @@ public class Deck {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+    public static Deck toDomain(DeckEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+        Deck deck = new Deck(
+            entity.getName(),
+            entity.getCommander(),
+            entity.getBracket()
+        );
+        deck.setIsActive(entity.getIsActive());
+        return deck;
+    }
+
+    public static DeckEntity fromDomain(Deck deck) {
+        if (deck == null) {
+            return null;
+        }
+        DeckEntity entity = new DeckEntity();
+        entity.setName(deck.getName());
+        entity.setCommander(deck.getCommander());
+        entity.setBracket(deck.getBracket());
+        entity.setIsActive(deck.getIsActive());
+        return entity;
+    }
+
+    
 }

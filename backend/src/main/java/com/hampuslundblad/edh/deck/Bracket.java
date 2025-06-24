@@ -1,4 +1,4 @@
-package com.hampuslundblad.edh.player;
+package com.hampuslundblad.edh.deck;
 
 public enum Bracket {
     ONE,
