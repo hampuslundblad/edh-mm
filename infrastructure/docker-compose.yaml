@@ -8,8 +8,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /etc/ssl/live/cert:/etc/ssl/cert.pem
-      - /etc/ssl/live/key.pem:/etc/ssl/key.pem
+      - /etc/ssl/cert:/etc/nginx/ssl/cert.pem
+      - /etc/ssl/key.pem:/etc/nginx/ssl/key.pem
 
   app:
     image: ghcr.io/hampuslundblad/edh-mm-app:main
