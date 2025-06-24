@@ -15,7 +15,6 @@ public class Player {
     private String name;
     private List<Deck> decks = new ArrayList<>();
 
-    // Constructors, getters, and setters
     public Player(String name, List<Deck> decks) {
         this.name = name;
         this.decks = decks;

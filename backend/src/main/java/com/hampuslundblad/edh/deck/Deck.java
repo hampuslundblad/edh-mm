@@ -6,7 +6,6 @@ public class Deck {
     private Bracket bracket;
     private Boolean isActive = true;
 
-    // Constructors
     public Deck(String name, String commander, Bracket bracket) {
         this.name = name;
         this.commander = commander;
@@ -28,7 +27,7 @@ public class Deck {
     public Boolean getIsActive() {
         return isActive;
     }
-    
+
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
