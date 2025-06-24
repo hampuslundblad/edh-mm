@@ -3,6 +3,10 @@ package com.hampuslundblad.edh.deck;
 import jakarta.persistence.*;
 
 @Entity
+@Table(
+    name = "deck_entity",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"player_id", "name"})
+)
 public class DeckEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,10 +3,14 @@ package com.hampuslundblad.edh.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hampuslundblad.edh.deck.Deck;
 import com.hampuslundblad.edh.deck.DeckEntity;
 
 public class Player {
+    private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
     private String name;
     private List<Deck> decks = new ArrayList<>();
@@ -35,15 +39,14 @@ public class Player {
 
     // Maps from PlayerEntity to Player
     public static Player toDomain(PlayerEntity entity) {
-        if (entity == null) {
-            return null;
-        }
         List<Deck> domainDecks = new ArrayList<>();
         if (entity.getDecks() != null) {
             for (var deckEntity : entity.getDecks()) {
                 domainDecks.add(Deck.toDomain(deckEntity));
             }
         }
+                logger.info("Mapping PlayerEntity '{}' with {} decks", entity.getName(), domainDecks.size());
+
         return new Player(entity.getName(), domainDecks);
     }
 

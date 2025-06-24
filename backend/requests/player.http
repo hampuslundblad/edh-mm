@@ -1,3 +1,21 @@
 GET http://localhost:8080/player
 Accept: application/json
+###
 
+POST  http://localhost:8080/player
+Content-Type: application/json
+
+{
+    "name": "Stefan",
+    "decks": []
+}
+
+###
+POST  http://localhost:8080/player/2/deck
+Content-Type: application/json
+
+{
+    "deckName": "New Deck",
+    "commander": "Unknown Commander",
+    "bracket": "TWO"
+}
