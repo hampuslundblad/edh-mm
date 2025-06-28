@@ -1,6 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { Button } from "@/components/ui/button"
-import { usePlayers } from "@/contexts/playersContext"
+import { createFileRoute } from "@tanstack/react-router"
 import { useAllPlayers } from "@/hooks/useAllPlayers"
 
 export const Route = createFileRoute("/players")({
@@ -8,7 +6,7 @@ export const Route = createFileRoute("/players")({
 })
 
 function App() {
-  const { data, isLoading, isError } = useAllPlayers()
+  const { data } = useAllPlayers()
   console.log("data", data)
   return (
     <div className="p-2">
@@ -20,12 +18,12 @@ function App() {
     </div>
   )
 }
-const PlayerLink = ({ id, name }: { id: string; name: string }) => {
-  return (
-    <Link to="/player/$id" params={{ id }}>
-      <Button variant="outline" className="">
-        {name}
-      </Button>
-    </Link>
-  )
-}
+// const PlayerLink = ({ id, name }: { id: string; name: string }) => {
+//   return (
+//     <Link to="/player/$id" params={{ id }}>
+//       <Button variant="outline" className="">
+//         {name}
+//       </Button>
+//     </Link>
+//   )
+// }
