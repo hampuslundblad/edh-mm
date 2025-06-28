@@ -16,3 +16,9 @@ services:
     #build: ../app
     ports:
       - "3000:3000"
+  backend:
+    image: ghcr.io/hampuslundblad/edh-mm-backend:main
+    volumes:
+      - edhmm-db:/data
+    ports:
+      - "5000:5000"
