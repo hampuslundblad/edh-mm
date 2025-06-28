@@ -10,10 +10,6 @@ dockerfile
 "
 
 for file in $FILES; do
-  # Skip files in scripts/
-  case "$file" in
-    scripts/*) continue ;;
-  esac
   echo "Downloading $file..."
   curl -o "$file" "$BASE_URL/$file"
 done
