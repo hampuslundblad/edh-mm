@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
 import { PlayersApi } from "@/api/player"
 
-export const usePosts = (id: string) => {
+export const usePlayer = (id: string) => {
   return useQuery({
-    queryKey: ["posts", id],
+    queryKey: ["players", id],
     queryFn: () => PlayersApi.getPlayerById(id),
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 1,

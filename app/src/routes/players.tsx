@@ -1,19 +1,21 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
 import { usePlayers } from "@/contexts/playersContext"
+import { useAllPlayers } from "@/hooks/useAllPlayers"
 
 export const Route = createFileRoute("/players")({
   component: App,
 })
 
 function App() {
-  const { players } = usePlayers()
+  const { data, isLoading, isError } = useAllPlayers()
+  console.log("data", data)
   return (
     <div className="p-2">
       <div className="flex flex-col gap-4">
-        {players.map((player) => (
+        {/* {players.map((player) => (
           <PlayerLink key={player.id} id={player.id} name={player.name} />
-        ))}
+        ))} */}
       </div>
     </div>
   )

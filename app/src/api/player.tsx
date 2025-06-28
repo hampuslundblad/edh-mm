@@ -2,8 +2,13 @@ import { initalPlayers } from "@/utils/players"
 
 export const PlayersApi = {
   getAllPlayers: async () => {
-    return with100msDelay(initalPlayers)
+    const response = await fetch("/api/player")
+    if (!response.ok) {
+      throw new Error(`Error fetching players: ${response.statusText}`)
+    }
+    return response.json()
   },
+
   getPlayerById: async (id: string) => {
     const player = initalPlayers.find((player) => player.id === id)
     if (!player) {

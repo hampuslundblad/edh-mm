@@ -4,10 +4,9 @@ import tailwindcss from "@tailwindcss/vite"
 
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite"
 import { resolve } from "node:path"
-import { BASE_PATH } from "./src/config"
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  // base: `${BASE_PATH}`,
   plugins: [
     TanStackRouterVite({ autoCodeSplitting: true }),
     viteReact(),
@@ -23,6 +22,32 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src"),
+    },
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+        changeOrigin: false,
+        secure: false,
+        configure: (proxy) => {
+          proxy.on("error", (err) => {
+            console.log("proxy error", err)
+          })
+          proxy.on("proxyReq", (req) => {
+            console.log("Sending Request to the Target:", req.method, req.path)
+          })
+          proxy.on("proxyRes", (proxyRes, req) => {
+            console.log(
+              "Received Response from the Target:",
+              proxyRes.statusCode,
+              proxyRes.statusMessage,
+              req.url,
+            )
+          })
+        },
+      },
     },
   },
 })

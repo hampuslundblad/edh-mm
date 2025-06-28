@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ###
-POST  http://localhost:8080/player/2/deck
+POST  http://localhost:8080/player/1/deck
 Content-Type: application/json
 
 {

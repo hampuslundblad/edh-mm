@@ -84,6 +84,7 @@ public class PlayerController {
         playerService.addDeckToPlayer(playerId, deck);
         return ResponseEntity.noContent().build();
     }
+    
     @PostMapping("/player/{playerId}/deck/{deckName}")
     public ResponseEntity<Void> toggleDeckActivity(@PathVariable Long playerId,
             @PathVariable String deckName) {
