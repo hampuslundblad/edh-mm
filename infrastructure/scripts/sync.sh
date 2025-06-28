@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Base raw URL for your GitHub repo
 BASE_URL="https://raw.githubusercontent.com/hampuslundblad/edh-mm/main/infrastructure"
