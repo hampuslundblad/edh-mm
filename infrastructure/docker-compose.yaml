@@ -2,6 +2,7 @@ services:
   nginx:
     depends_on:
       - app
+      - backend
     restart: always
     build: .
     ports:
