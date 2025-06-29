@@ -13,7 +13,6 @@ services:
 
   app:
     image: ghcr.io/hampuslundblad/edh-mm-app:main
-    #build: ../app
     ports:
       - "3000:3000"
   backend:
