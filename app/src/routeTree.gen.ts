@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as PlayersImport } from './routes/players'
 import { Route as BracketInfoImport } from './routes/bracket-info'
+import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
 import { Route as PlayerIdImport } from './routes/player.$id'
 
@@ -27,6 +28,12 @@ const PlayersRoute = PlayersImport.update({
 const BracketInfoRoute = BracketInfoImport.update({
   id: '/bracket-info',
   path: '/bracket-info',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRoute = AdminImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,6 +58,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
     '/bracket-info': {
@@ -81,6 +95,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
   '/player/$id': typeof PlayerIdRoute
@@ -88,6 +103,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
   '/player/$id': typeof PlayerIdRoute
@@ -96,6 +112,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
   '/player/$id': typeof PlayerIdRoute
@@ -103,15 +120,16 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bracket-info' | '/players' | '/player/$id'
+  fullPaths: '/' | '/admin' | '/bracket-info' | '/players' | '/player/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bracket-info' | '/players' | '/player/$id'
-  id: '__root__' | '/' | '/bracket-info' | '/players' | '/player/$id'
+  to: '/' | '/admin' | '/bracket-info' | '/players' | '/player/$id'
+  id: '__root__' | '/' | '/admin' | '/bracket-info' | '/players' | '/player/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   BracketInfoRoute: typeof BracketInfoRoute
   PlayersRoute: typeof PlayersRoute
   PlayerIdRoute: typeof PlayerIdRoute
@@ -119,6 +137,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   BracketInfoRoute: BracketInfoRoute,
   PlayersRoute: PlayersRoute,
   PlayerIdRoute: PlayerIdRoute,
@@ -135,6 +154,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/admin",
         "/bracket-info",
         "/players",
         "/player/$id"
@@ -142,6 +162,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/admin": {
+      "filePath": "admin.tsx"
     },
     "/bracket-info": {
       "filePath": "bracket-info.tsx"

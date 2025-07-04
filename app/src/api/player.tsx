@@ -1,27 +1,57 @@
-import { initalPlayers } from "@/utils/players"
+import type { Bracket } from "@/utils/decks"
+
+export type Deck = {
+  name: string
+  commander: string
+  bracket: Bracket
+  isActive: boolean
+}
+
+export type Player = {
+  id: string
+  name: string
+  decks: Array<Deck>
+}
+
+export type GetPlayerResponse = Player
+
+export type GetAllPlayerResponse = {
+  players: Array<Player>
+}
 
 export const PlayersApi = {
-  getAllPlayers: async () => {
-    const response = await fetch("/api/player")
+  getAllPlayers: async (): Promise<GetAllPlayerResponse> => {
+    const response = await fetch("/api/players")
     if (!response.ok) {
       throw new Error(`Error fetching players: ${response.statusText}`)
     }
     return response.json()
   },
 
-  getPlayerById: async (id: string) => {
-    const player = initalPlayers.find((player) => player.id === id)
-    if (!player) {
-      throw new Error(`Player with id ${id} not found`)
+  createPlayer: async (name: string) => {
+    const response = await fetchWithPost("/api/player", { name })
+    return response.json()
+  },
+
+  getPlayerById: async (id: string): Promise<GetPlayerResponse> => {
+    const player = await fetch(`/api/player/${id}`)
+    if (!player.ok) {
+      throw new Error(`Error fetching player: ${player.statusText}`)
     }
-    return with100msDelay(player)
+    return player.json()
   },
 }
 
-function with100msDelay<T>(obj: T): Promise<T> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(obj)
-    }, 100)
+async function fetchWithPost<T>(url: string, data: T): Promise<Response> {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   })
+  if (!response.ok) {
+    throw new Error(`Error fetching data: ${response.statusText}`)
+  }
+  return response
 }

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { ChevronsUpDown } from "lucide-react"
-import { initalPlayers, numbersOfDecksWithinBracket } from "@/utils/players"
+import { numbersOfDecksWithinBracket } from "@/utils/players"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -19,12 +19,16 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { useAllPlayers } from "@/hooks/useAllPlayers"
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const allPlayersQuery = useAllPlayers()
+  const players = allPlayersQuery.data?.players ?? []
+
   const [selectedBracket, setSelectedBracket] = useState<Bracket>(Bracket.Two)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [chosenDecks, setChosenDecks] = useState<
@@ -39,21 +43,47 @@ function RouteComponent() {
   })
 
   function handleCreateGame() {
-    const decks = initalPlayers.map((player) => {
+    if (players.length === 0) {
+      // Handle no players case
+      return {
+        player: "No players available",
+        deck: "No decks available",
+      }
+    }
+
+    const decks = players.map((player) => {
       // Filter decks for the selected bracket
-      const bracketDecks = player.deck.filter(
-        (deck) => deck.bracket === selectedBracket,
-      )
+
+      const bracketDecks = player.decks.filter((deck) => {
+        return deck.bracket === selectedBracket
+      })
 
       // Pick a random deck from the filtered list
       const chosen =
         bracketDecks[Math.floor(Math.random() * bracketDecks.length)]
+
       return {
         player: player.name,
         deck: chosen.name,
       }
     })
     setChosenDecks(decks)
+  }
+
+  if (allPlayersQuery.isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    )
+  }
+
+  if (allPlayersQuery.isError) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Error loading players {allPlayersQuery.error.message}
+      </div>
+    )
   }
 
   return (
@@ -119,14 +149,14 @@ function RouteComponent() {
 
         <Select onValueChange={(value) => setSelectedBracket(value as Bracket)}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={"2"} />
+            <SelectValue placeholder={Bracket.Two} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Choose a bracket:</SelectLabel>
-              <SelectItem value="2">Bracket 2</SelectItem>
-              <SelectItem value="3">Bracket 3</SelectItem>
-              <SelectItem value="3+">Bracket 3+</SelectItem>
+              <SelectItem value={Bracket.Two}>Bracket 2</SelectItem>
+              <SelectItem value={Bracket.Three}>Bracket 3</SelectItem>
+              <SelectItem value={Bracket.ThreePlus}>Bracket 3+</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -144,7 +174,12 @@ function RouteComponent() {
             >
               <span className="font-medium">
                 {entry.player} (
-                {numbersOfDecksWithinBracket(entry.player, selectedBracket)})
+                {numbersOfDecksWithinBracket(
+                  entry.player,
+                  selectedBracket,
+                  players,
+                )}
+                )
               </span>
               <span className="">{entry.deck}</span>
             </li>

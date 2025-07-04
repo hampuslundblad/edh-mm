@@ -18,7 +18,7 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <PlayersProvider>
+        <PlayersProvider initialPlayers={[]}>
           <RouterProvider router={router} />
         </PlayersProvider>
       </QueryClientProvider>

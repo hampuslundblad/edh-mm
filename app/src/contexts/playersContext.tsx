@@ -1,13 +1,12 @@
-import type { Player } from "@/utils/players"
-import { initalPlayers } from "@/utils/players"
 import React, { createContext, useContext, useReducer } from "react"
+import type { Player } from "@/api/player"
 
 interface PlayersContextType {
-  players: Player[]
+  players: Array<Player>
 }
 
 interface PlayersDispatchContextType {
-  dispatch: React.Dispatch<{ type: string; payload: Player[] }>
+  dispatch: React.Dispatch<{ type: string; payload: Array<Player> }>
 }
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined)
 
@@ -17,14 +16,16 @@ const PlayersDispatchContext = createContext<
 
 export const PlayersProvider = ({
   children,
+  initialPlayers,
 }: {
   children: React.ReactNode
+  initialPlayers: Array<Player>
 }) => {
-  const [players, dispatch] = useReducer(playersReducer, initalPlayers)
+  const [players, dispatch] = useReducer(playersReducer, initialPlayers)
 
   function playersReducer(
-    state: Player[],
-    action: { type: string; payload: Player[] },
+    state: Array<Player>,
+    action: { type: string; payload: Array<Player> },
   ) {
     switch (action.type) {
       case "ADD_DECK": {
@@ -32,7 +33,7 @@ export const PlayersProvider = ({
         return state.map((player) => {
           const updatedPlayer = payload.find((p) => p.id === player.id)
           return updatedPlayer
-            ? { ...player, deck: updatedPlayer.deck }
+            ? { ...player, decks: updatedPlayer.decks }
             : player
         })
       }
