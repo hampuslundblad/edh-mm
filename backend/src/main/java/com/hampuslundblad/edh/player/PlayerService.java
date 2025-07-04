@@ -9,6 +9,7 @@ import com.hampuslundblad.edh.player.exceptions.DuplicateDeckNameException;
 import com.hampuslundblad.edh.player.exceptions.PlayerNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -25,11 +26,16 @@ public class PlayerService {
                 .toList();
     }
 
-    public Player getPlayerById(Long id) {
-        PlayerEntity playerEntity = playerRepository.findById(id)
-        .orElseThrow(() -> new PlayerNotFoundException(id));
-        
-        return Player.toDomain(playerEntity);
+    public Optional<Player> getPlayerById(Long id) {
+        Optional<PlayerEntity> playerEntity = playerRepository.findById(id);
+        return playerEntity.map(Player::toDomain);
+    }
+
+    public Player createPlayer(String name) {
+        Player player = new Player(Optional.empty(), name, List.of());
+        var entity = Player.fromDomain(player);
+        var savedEntity = playerRepository.save(entity);
+        return Player.toDomain(savedEntity);
     }
 
     public Player savePlayer(Player player) {
@@ -42,24 +48,22 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-
     public Player addDeckToPlayer(Long playerId, Deck deck) {
         PlayerEntity playerEntity = playerRepository.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
-        
+
         DeckEntity deckEntity = Deck.fromDomain(deck);
         if (hasDeckWithName(playerEntity, deck.getName())) {
             throw new DuplicateDeckNameException(deck.getName());
         }
         playerEntity.getDecks().add(deckEntity);
         playerRepository.save(playerEntity);
-    
+
         return Player.toDomain(playerEntity);
     }
-
 
     private boolean hasDeckWithName(PlayerEntity playerEntity, String deckName) {
         return playerEntity.getDecks().stream()
                 .anyMatch(deck -> deck.getName().equalsIgnoreCase(deckName));
-}
+    }
 }

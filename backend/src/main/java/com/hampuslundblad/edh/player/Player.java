@@ -2,6 +2,7 @@ package com.hampuslundblad.edh.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +13,20 @@ import com.hampuslundblad.edh.deck.DeckEntity;
 public class Player {
     private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
+    private Optional<Long> id;
     private String name;
     private List<Deck> decks = new ArrayList<>();
 
-    public Player(String name, List<Deck> decks) {
+    public Player(Optional<Long> id, String name, List<Deck> decks) {
+        this.id = id;
         this.name = name;
         this.decks = decks;
     }
+
+    public Long getId() {
+        return id.orElse(null);
+    }
+
 
     public String getName() {
         return name;
@@ -46,7 +54,7 @@ public class Player {
         }
                 logger.info("Mapping PlayerEntity '{}' with {} decks", entity.getName(), domainDecks.size());
 
-        return new Player(entity.getName(), domainDecks);
+        return new Player(Optional.ofNullable(entity.getId()), entity.getName(), domainDecks);
     }
 
     // Maps from Player to PlayerEntity

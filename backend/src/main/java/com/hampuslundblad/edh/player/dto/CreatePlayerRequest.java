@@ -2,6 +2,6 @@ package com.hampuslundblad.edh.player.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record PostPlayerRequest(
+public record CreatePlayerRequest(
     @NotBlank String name
 ) {}

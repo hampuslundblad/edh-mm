@@ -1,15 +1,23 @@
 package com.hampuslundblad.edh.deck;
 
+import java.util.Optional;
+
 public class Deck {
+    private Optional<Long> id;
     private String name;
     private String commander;
     private Bracket bracket;
     private Boolean isActive = true;
 
-    public Deck(String name, String commander, Bracket bracket) {
+    public Deck(Optional<Long> id, String name, String commander, Bracket bracket) {
+        this.id = id;
         this.name = name;
         this.commander = commander;
         this.bracket = bracket;
+    }
+
+    public Optional<Long> getId() {
+        return id;
     }
 
     public String getName() {
@@ -33,10 +41,8 @@ public class Deck {
     }
 
     public static Deck toDomain(DeckEntity entity) {
-        if (entity == null) {
-            return null;
-        }
         Deck deck = new Deck(
+            Optional.ofNullable(entity.getId()),
             entity.getName(),
             entity.getCommander(),
             entity.getBracket()
@@ -46,9 +52,6 @@ public class Deck {
     }
 
     public static DeckEntity fromDomain(Deck deck) {
-        if (deck == null) {
-            return null;
-        }
         DeckEntity entity = new DeckEntity();
         entity.setName(deck.getName());
         entity.setCommander(deck.getCommander());
