@@ -44,9 +44,13 @@ public class PlayerService {
         return Player.toDomain(playerEntity);
     }
 
-    public void deletePlayer(Long id) {
-        playerRepository.deleteById(id);
+   public void deletePlayer(Long id) {
+    boolean exists = playerRepository.existsById(id);
+    if (!exists) {
+        throw new PlayerNotFoundException(id);
     }
+    playerRepository.deleteById(id);
+}
 
     public Player addDeckToPlayer(Long playerId, Deck deck) {
         PlayerEntity playerEntity = playerRepository.findById(playerId)
@@ -56,6 +60,7 @@ public class PlayerService {
         if (hasDeckWithName(playerEntity, deck.getName())) {
             throw new DuplicateDeckNameException(deck.getName());
         }
+        
         playerEntity.getDecks().add(deckEntity);
         playerRepository.save(playerEntity);
 

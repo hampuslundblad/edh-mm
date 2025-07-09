@@ -19,6 +19,12 @@ export type GetAllPlayerResponse = {
   players: Array<Player>
 }
 
+export type AddDeckToPlayerRequest = {
+  playerId: string
+  deckName: string
+  bracket: Bracket
+}
+
 export const PlayersApi = {
   getAllPlayers: async (): Promise<GetAllPlayerResponse> => {
     const response = await fetch("/api/players")
@@ -29,8 +35,34 @@ export const PlayersApi = {
   },
 
   createPlayer: async (name: string) => {
-    const response = await fetchWithPost("/api/player", { name })
-    return response.json()
+    await fetchWithPost("/api/player", { name })
+    //   return response.json()
+  },
+
+  addDeckToPlayer: async (request: AddDeckToPlayerRequest) => {
+    const deck = {
+      deckName: request.deckName,
+      bracket: request.bracket,
+    }
+
+    const response = await fetchWithPost(
+      `/api/player/${request.playerId}/deck`,
+      deck,
+    )
+    if (!response.ok) {
+      throw new Error(`Error adding deck to player: ${response.statusText}`)
+    }
+    return Promise.resolve()
+  },
+
+  deletePlayer: async (id: string) => {
+    const response = await fetch(`/api/player/${id}`, {
+      method: "DELETE",
+    })
+    if (!response.ok) {
+      throw new Error(`Error deleting player: ${response.statusText}`)
+    }
+    return Promise.resolve()
   },
 
   getPlayerById: async (id: string): Promise<GetPlayerResponse> => {

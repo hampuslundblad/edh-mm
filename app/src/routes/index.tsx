@@ -3,15 +3,6 @@ import { createFileRoute } from "@tanstack/react-router"
 import { ChevronsUpDown } from "lucide-react"
 import { numbersOfDecksWithinBracket } from "@/utils/players"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Bracket } from "@/utils/decks"
 import { Switch } from "@/components/ui/switch"
 import {
@@ -20,6 +11,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { useAllPlayers } from "@/hooks/useAllPlayers"
+import BracketSelect from "@/components/BracketSelect"
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -147,19 +139,10 @@ function RouteComponent() {
           </CollapsibleContent>
         </Collapsible>
 
-        <Select onValueChange={(value) => setSelectedBracket(value as Bracket)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={Bracket.Two} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Choose a bracket:</SelectLabel>
-              <SelectItem value={Bracket.Two}>Bracket 2</SelectItem>
-              <SelectItem value={Bracket.Three}>Bracket 3</SelectItem>
-              <SelectItem value={Bracket.ThreePlus}>Bracket 3+</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <BracketSelect
+          selectedBracket={selectedBracket}
+          onSelect={setSelectedBracket}
+        />
         <Button className="self-start" size="lg" onClick={handleCreateGame}>
           Create Game
         </Button>

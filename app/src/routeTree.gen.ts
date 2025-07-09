@@ -15,7 +15,9 @@ import { Route as PlayersImport } from './routes/players'
 import { Route as BracketInfoImport } from './routes/bracket-info'
 import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
-import { Route as PlayerIdImport } from './routes/player.$id'
+import { Route as PlayerIdIndexImport } from './routes/player.$id.index'
+import { Route as PlayerIdDeckImport } from './routes/player.$id.deck'
+import { Route as PlayerIdEditDeckIdImport } from './routes/player.$id.edit.$deckId'
 
 // Create/Update Routes
 
@@ -43,9 +45,21 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PlayerIdRoute = PlayerIdImport.update({
-  id: '/player/$id',
-  path: '/player/$id',
+const PlayerIdIndexRoute = PlayerIdIndexImport.update({
+  id: '/player/$id/',
+  path: '/player/$id/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlayerIdDeckRoute = PlayerIdDeckImport.update({
+  id: '/player/$id/deck',
+  path: '/player/$id/deck',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlayerIdEditDeckIdRoute = PlayerIdEditDeckIdImport.update({
+  id: '/player/$id/edit/$deckId',
+  path: '/player/$id/edit/$deckId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -81,11 +95,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayersImport
       parentRoute: typeof rootRoute
     }
-    '/player/$id': {
-      id: '/player/$id'
+    '/player/$id/deck': {
+      id: '/player/$id/deck'
+      path: '/player/$id/deck'
+      fullPath: '/player/$id/deck'
+      preLoaderRoute: typeof PlayerIdDeckImport
+      parentRoute: typeof rootRoute
+    }
+    '/player/$id/': {
+      id: '/player/$id/'
       path: '/player/$id'
       fullPath: '/player/$id'
-      preLoaderRoute: typeof PlayerIdImport
+      preLoaderRoute: typeof PlayerIdIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/player/$id/edit/$deckId': {
+      id: '/player/$id/edit/$deckId'
+      path: '/player/$id/edit/$deckId'
+      fullPath: '/player/$id/edit/$deckId'
+      preLoaderRoute: typeof PlayerIdEditDeckIdImport
       parentRoute: typeof rootRoute
     }
   }
@@ -98,7 +126,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
-  '/player/$id': typeof PlayerIdRoute
+  '/player/$id/deck': typeof PlayerIdDeckRoute
+  '/player/$id': typeof PlayerIdIndexRoute
+  '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -106,7 +136,9 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
-  '/player/$id': typeof PlayerIdRoute
+  '/player/$id/deck': typeof PlayerIdDeckRoute
+  '/player/$id': typeof PlayerIdIndexRoute
+  '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
 }
 
 export interface FileRoutesById {
@@ -115,15 +147,39 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
-  '/player/$id': typeof PlayerIdRoute
+  '/player/$id/deck': typeof PlayerIdDeckRoute
+  '/player/$id/': typeof PlayerIdIndexRoute
+  '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/bracket-info' | '/players' | '/player/$id'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/bracket-info'
+    | '/players'
+    | '/player/$id/deck'
+    | '/player/$id'
+    | '/player/$id/edit/$deckId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/bracket-info' | '/players' | '/player/$id'
-  id: '__root__' | '/' | '/admin' | '/bracket-info' | '/players' | '/player/$id'
+  to:
+    | '/'
+    | '/admin'
+    | '/bracket-info'
+    | '/players'
+    | '/player/$id/deck'
+    | '/player/$id'
+    | '/player/$id/edit/$deckId'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/bracket-info'
+    | '/players'
+    | '/player/$id/deck'
+    | '/player/$id/'
+    | '/player/$id/edit/$deckId'
   fileRoutesById: FileRoutesById
 }
 
@@ -132,7 +188,9 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   BracketInfoRoute: typeof BracketInfoRoute
   PlayersRoute: typeof PlayersRoute
-  PlayerIdRoute: typeof PlayerIdRoute
+  PlayerIdDeckRoute: typeof PlayerIdDeckRoute
+  PlayerIdIndexRoute: typeof PlayerIdIndexRoute
+  PlayerIdEditDeckIdRoute: typeof PlayerIdEditDeckIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -140,7 +198,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   BracketInfoRoute: BracketInfoRoute,
   PlayersRoute: PlayersRoute,
-  PlayerIdRoute: PlayerIdRoute,
+  PlayerIdDeckRoute: PlayerIdDeckRoute,
+  PlayerIdIndexRoute: PlayerIdIndexRoute,
+  PlayerIdEditDeckIdRoute: PlayerIdEditDeckIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -157,7 +217,9 @@ export const routeTree = rootRoute
         "/admin",
         "/bracket-info",
         "/players",
-        "/player/$id"
+        "/player/$id/deck",
+        "/player/$id/",
+        "/player/$id/edit/$deckId"
       ]
     },
     "/": {
@@ -172,8 +234,14 @@ export const routeTree = rootRoute
     "/players": {
       "filePath": "players.tsx"
     },
-    "/player/$id": {
-      "filePath": "player.$id.tsx"
+    "/player/$id/deck": {
+      "filePath": "player.$id.deck.tsx"
+    },
+    "/player/$id/": {
+      "filePath": "player.$id.index.tsx"
+    },
+    "/player/$id/edit/$deckId": {
+      "filePath": "player.$id.edit.$deckId.tsx"
     }
   }
 }
