@@ -5,7 +5,7 @@ import com.hampuslundblad.edh.deck.Bracket;
 import com.hampuslundblad.edh.player.PlayerController;
 import com.hampuslundblad.edh.player.PlayerService;
 import com.hampuslundblad.edh.player.dto.AddDeckToPlayerRequest;
-import com.hampuslundblad.edh.player.dto.PostPlayerRequest;
+import com.hampuslundblad.edh.player.dto.CreatePlayerRequest;
 import com.hampuslundblad.edh.player.exceptions.DuplicateDeckNameException;
 import com.hampuslundblad.edh.player.exceptions.PlayerNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class PlayerControllerTest {
         when(playerService.savePlayer(any()))
             .thenThrow(new PlayerNotFoundException(1L));
 
-        PostPlayerRequest request = new PostPlayerRequest("Some Name");
+        CreatePlayerRequest request = new CreatePlayerRequest("Some Name");
 
         mockMvc.perform(post("/player")
                 .contentType(MediaType.APPLICATION_JSON)
