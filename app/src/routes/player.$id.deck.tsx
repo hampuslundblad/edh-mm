@@ -2,7 +2,6 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { toast } from "sonner"
-import type { AddDeckToPlayerRequest } from "@/api/player"
 import BracketSelect from "@/components/BracketSelect"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,17 +22,15 @@ function RouteComponent() {
 
   const [selectedBracket, setSelectedBracket] = useState<Bracket>(Bracket.Two)
 
-  const [addDeckRequest, setAddDeckRequest] = useState<AddDeckToPlayerRequest>({
-    playerId: id,
-    deckName: "",
-    bracket: selectedBracket,
-  })
+  const [deckName, setDeckName] = useState("")
 
   const handleAddDeck = () => {
-    addDeckMutation.mutate(addDeckRequest)
+    addDeckMutation.mutate({ playerId: id, deckName, bracket: selectedBracket })
   }
 
-  const isInputValid = addDeckRequest.deckName.length > 1
+  console.log(selectedBracket)
+
+  const isInputValid = deckName.length > 1
 
   useEffect(() => {
     if (addDeckMutation.isSuccess) {
@@ -57,14 +54,10 @@ function RouteComponent() {
         <Label>Deck Name</Label>
         <Input
           className="self-start"
-          value={addDeckRequest.deckName}
-          onChange={(e) =>
-            setAddDeckRequest((prev) => ({
-              ...prev,
-              deckName: e.target.value,
-            }))
-          }
+          value={deckName}
+          onChange={(e) => setDeckName(e.target.value)}
         />
+
         <Label>Bracket</Label>
         <BracketSelect
           selectedBracket={selectedBracket}
