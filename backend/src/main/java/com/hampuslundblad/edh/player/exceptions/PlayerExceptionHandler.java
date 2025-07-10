@@ -16,6 +16,6 @@ public class PlayerExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DuplicateDeckNameException.class)
     public void handleDuplicateDeckName(DuplicateDeckNameException ex) {
-        // Optionally log or add a response body
-    }   
+      
+    }
 }

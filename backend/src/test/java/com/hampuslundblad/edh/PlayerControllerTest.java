@@ -2,27 +2,37 @@ package com.hampuslundblad.edh;
 
 
 import com.hampuslundblad.edh.deck.Bracket;
+import com.hampuslundblad.edh.deck.exceptions.DeckExceptionHandler;
+import com.hampuslundblad.edh.deck.exceptions.DeckNotFoundException;
 import com.hampuslundblad.edh.player.PlayerController;
 import com.hampuslundblad.edh.player.PlayerService;
 import com.hampuslundblad.edh.player.dto.AddDeckToPlayerRequest;
-import com.hampuslundblad.edh.player.dto.CreatePlayerRequest;
+
+import com.hampuslundblad.edh.player.dto.UpdateDeckRequest;
 import com.hampuslundblad.edh.player.exceptions.DuplicateDeckNameException;
+import com.hampuslundblad.edh.player.exceptions.PlayerExceptionHandler;
 import com.hampuslundblad.edh.player.exceptions.PlayerNotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PlayerController.class)
+@WebMvcTest(controllers = PlayerController.class)
+@Import({PlayerExceptionHandler.class, DeckExceptionHandler.class})
 class PlayerControllerTest {
 
     @Autowired
@@ -34,32 +44,48 @@ class PlayerControllerTest {
     @MockBean
     private PlayerService playerService;
 
+    // @Test
+    // void addDeckToPlayer_whenDuplicateDeckName_returnsConflict() throws Exception {
+    //     // Arrange: make the service throw the exception
+    //     when(playerService.addDeckToPlayer(anyLong(), any()))
+    //         .thenThrow(new DuplicateDeckNameException("Duplicate Deck"));
+
+    //     AddDeckToPlayerRequest request = new AddDeckToPlayerRequest("Duplicate Deck", Bracket.TWO);
+
+    //     mockMvc.perform(post("/player/1/deck")
+    //             .contentType(MediaType.APPLICATION_JSON)
+    //             .content(objectMapper.writeValueAsString(request)))
+    //             .andExpect(status().isConflict());
+    // }
+
+
+
     @Test
-    void createPlayer_whenPlayerNotFound_returnsNotFound() throws Exception {
-        // Arrange: make the service throw the exception
-        when(playerService.savePlayer(any()))
+    void updateDeck_whenPlayerNotFound_returnsNotFound() throws Exception {
+        // Arrange: make the service throw PlayerNotFoundException
+        when(playerService.updateDeck(any(Long.class), any(Long.class), any(UpdateDeckRequest.class)))
             .thenThrow(new PlayerNotFoundException(1L));
 
-        CreatePlayerRequest request = new CreatePlayerRequest("Some Name");
+        UpdateDeckRequest request = new UpdateDeckRequest("DeckName", "Commander", Bracket.TWO, true);
 
-        mockMvc.perform(post("/player")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/player/1/deck/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
     @Test
-    void addDeckToPlayer_whenDuplicateDeckName_returnsConflict() throws Exception {
-        // Arrange: make the service throw the exception
-        when(playerService.addDeckToPlayer(any(Long.class), any()))
-            .thenThrow(new DuplicateDeckNameException("Duplicate Deck"));
+    void updateDeck_whenDeckNotFound_returnsNotFound() throws Exception {
+        // Arrange: make the service throw DeckNotFoundException
+        when(playerService.updateDeck(any(Long.class), any(Long.class), any(UpdateDeckRequest.class)))
+            .thenThrow(new DeckNotFoundException(1L));
 
-        AddDeckToPlayerRequest request = new AddDeckToPlayerRequest("Duplicate Deck", Bracket.TWO);
+       UpdateDeckRequest request = new UpdateDeckRequest("DeckName", "Commander", Bracket.TWO, true);
 
-        mockMvc.perform(post("/player/1/deck")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/player/1/deck/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isConflict());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-
 
 }

@@ -22,9 +22,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useDeletePlayer } from "@/hooks/useDeletePlayer"
+import Layout from "@/components/Layout"
 
 export const Route = createFileRoute("/player/$id/")({
-  component: RouteComponent,
+  component: () => (
+    <Layout>
+      <RouteComponent />
+    </Layout>
+  ),
   parseParams: ({ id }) => ({ id: String(id) }),
   loader: async ({ params }): Promise<GetPlayerResponse> => {
     // Simulate fetching player data based on the ID

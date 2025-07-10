@@ -19,4 +19,28 @@ export const Route = createRootRoute({
       {isDevelopment() && <TanStackRouterDevtools />}
     </main>
   ),
+  errorComponent: (error) => (
+    <>
+      <main className="bg-[#232323] text-white min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <h1 className="text-2xl">
+            An error occurred:{" "}
+            <span className="text-red-400">{error.error.message}</span>
+          </h1>
+        </div>
+
+        {isDevelopment() && <TanStackRouterDevtools />}
+      </main>
+    </>
+  ),
+  notFoundComponent: () => (
+    <main className="bg-[#232323] text-white min-h-screen flex flex-col">
+      <Header />
+      <div className="flex-1 flex items-center justify-center">
+        <h1 className="text-2xl">Page not found</h1>
+      </div>
+      {isDevelopment() && <TanStackRouterDevtools />}
+    </main>
+  ),
 })

@@ -14,9 +14,14 @@ import {
 } from "@/components/ui/dialog"
 import InputWithButton from "@/components/InputWithButton"
 import { useCreatePlayer } from "@/hooks/useCreatePlayer"
+import Layout from "@/components/Layout"
 
 export const Route = createFileRoute("/players")({
-  component: App,
+  component: () => (
+    <Layout>
+      <App />
+    </Layout>
+  ),
 })
 
 function App() {
@@ -31,7 +36,7 @@ function App() {
 
   if (isSuccess) {
     return (
-      <div className="p-2">
+      <div className="">
         <CreatePlayerModal />
         <div className="flex flex-col gap-4">
           {data.players.map((player) => (
@@ -51,9 +56,9 @@ const PlayerLink = ({ id, name }: { id: string; name: string }) => {
       params={{ id }}
       preload={false}
     >
-      <Button variant="outline" className="">
-        {name}
-      </Button>
+      <div className="rounded-lg shadow p-4 border hover:bg-orange-500 border-gray-200 min-w-[250px] min-h-[100px]">
+        <span className="text-lg font-semibold text-white">{name}</span>
+      </div>
     </Link>
   )
 }

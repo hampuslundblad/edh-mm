@@ -25,6 +25,15 @@ export type AddDeckToPlayerRequest = {
   bracket: Bracket
 }
 
+export type UpdateDeckRequest = {
+  playerId: string
+  deckId: string
+  name: string
+  commander: string
+  bracket: Bracket
+  isActive: boolean
+}
+
 export const PlayersApi = {
   getAllPlayers: async (): Promise<GetAllPlayerResponse> => {
     const response = await fetch("/api/players")
@@ -51,6 +60,24 @@ export const PlayersApi = {
     )
     if (!response.ok) {
       throw new Error(`Error adding deck to player: ${response.statusText}`)
+    }
+    return Promise.resolve()
+  },
+
+  updateDeck: async (
+    playerId: string,
+    deckId: string,
+    request: { name: string; commander: string },
+  ) => {
+    const response = await fetch(`/api/player/${playerId}/deck/${deckId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    })
+    if (!response.ok) {
+      throw new Error(`Error updating deck: ${response.statusText}`)
     }
     return Promise.resolve()
   },

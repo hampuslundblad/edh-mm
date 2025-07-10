@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.hampuslundblad.edh.deck.Deck;
 import com.hampuslundblad.edh.deck.DeckEntity;
+import com.hampuslundblad.edh.deck.exceptions.DeckNotFoundException;
+import com.hampuslundblad.edh.player.dto.UpdateDeckRequest;
 import com.hampuslundblad.edh.player.exceptions.DuplicateDeckNameException;
 import com.hampuslundblad.edh.player.exceptions.PlayerNotFoundException;
 
@@ -44,13 +46,32 @@ public class PlayerService {
         return Player.toDomain(playerEntity);
     }
 
-   public void deletePlayer(Long id) {
-    boolean exists = playerRepository.existsById(id);
-    if (!exists) {
-        throw new PlayerNotFoundException(id);
+    public void deletePlayer(Long id) {
+        boolean exists = playerRepository.existsById(id);
+        if (!exists) {
+            throw new PlayerNotFoundException(id);
+        }
+        playerRepository.deleteById(id);
     }
-    playerRepository.deleteById(id);
-}
+
+    public Player updateDeck(Long playerId, Long deckId, UpdateDeckRequest request) {
+        PlayerEntity playerEntity = playerRepository.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        DeckEntity deckEntity = playerEntity.getDecks().stream()
+                .filter(d -> d.getId().equals(deckId))
+                .findFirst()
+                .orElseThrow(() -> new DeckNotFoundException(deckId));
+
+        deckEntity.setName(request.name());
+        deckEntity.setCommander(request.commander());
+        deckEntity.setBracket(request.bracket());
+        deckEntity.setIsActive(request.isActive());
+
+        playerRepository.save(playerEntity);
+
+        return Player.toDomain(playerEntity);
+    }
 
     public Player addDeckToPlayer(Long playerId, Deck deck) {
         PlayerEntity playerEntity = playerRepository.findById(playerId)
@@ -60,7 +81,7 @@ public class PlayerService {
         if (hasDeckWithName(playerEntity, deck.getName())) {
             throw new DuplicateDeckNameException(deck.getName());
         }
-        
+
         playerEntity.getDecks().add(deckEntity);
         playerRepository.save(playerEntity);
 

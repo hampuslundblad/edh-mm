@@ -12,9 +12,14 @@ import {
 } from "@/components/ui/collapsible"
 import { useAllPlayers } from "@/hooks/useAllPlayers"
 import BracketSelect from "@/components/BracketSelect"
+import Layout from "@/components/Layout"
 
 export const Route = createFileRoute("/")({
-  component: RouteComponent,
+  component: () => (
+    <Layout>
+      <RouteComponent />
+    </Layout>
+  ),
 })
 
 function RouteComponent() {
