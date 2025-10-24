@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Bracket } from "@/utils/decks"
 import { useAddDeck } from "@/hooks/useAddDeck"
+import Back from "@/components/Back"
 
 export const Route = createFileRoute("/player/$id/deck")({
   component: RouteComponent,
@@ -44,11 +45,7 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-col gap-4 p-2 items-center">
-      <Link to={".."}>
-        <span className="flex items-center gap-2 text-md text-muted-foreground">
-          <ArrowLeft /> Back
-        </span>
-      </Link>
+      <Back />
       <h2> Create deck </h2>
       <div className="flex flex-col gap-2">
         <Label>Deck Name</Label>

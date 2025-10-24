@@ -1,6 +1,7 @@
 import type { Bracket } from "@/utils/decks"
 
 export type Deck = {
+  id: string
   name: string
   commander: string
   bracket: Bracket
@@ -67,7 +68,7 @@ export const PlayersApi = {
   updateDeck: async (
     playerId: string,
     deckId: string,
-    request: { name: string; commander: string },
+    request: { name: string; bracket: Bracket; isActive: boolean },
   ) => {
     const response = await fetch(`/api/player/${playerId}/deck/${deckId}`, {
       method: "PATCH",
@@ -80,6 +81,14 @@ export const PlayersApi = {
       throw new Error(`Error updating deck: ${response.statusText}`)
     }
     return Promise.resolve()
+  },
+
+  getDeckById: async (playerId: string, deckId: string): Promise<Deck> => {
+    const response = await fetch(`/api/player/${playerId}/deck/${deckId}`)
+    if (!response.ok) {
+      throw new Error(`Error fetching deck: ${response.statusText}`)
+    }
+    return response.json()
   },
 
   deletePlayer: async (id: string) => {

@@ -77,6 +77,16 @@ public class PlayerController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/player/{playerId}/deck/{deckId}")
+    public ResponseEntity<Deck> getPlayerDeck(@PathVariable Long playerId, @PathVariable Long deckId) {
+        Optional<Deck> deck = playerService.getPlayerDeck(playerId, deckId);
+        if (deck.isPresent()) {
+            return ResponseEntity.ok(deck.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/player/{playerId}")
     public ResponseEntity<Void> deletePlayer(@PathVariable Long playerId) {
         playerService.deletePlayer(playerId);

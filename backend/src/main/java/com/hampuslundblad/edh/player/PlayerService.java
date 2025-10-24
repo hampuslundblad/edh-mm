@@ -54,6 +54,18 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
+    public Optional<Deck> getPlayerDeck(Long playerId, Long deckId) {
+        PlayerEntity playerEntity = playerRepository.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        DeckEntity deckEntity = playerEntity.getDecks().stream()
+                .filter(d -> d.getId().equals(deckId))
+                .findFirst()
+                .orElseThrow(() -> new DeckNotFoundException(deckId));
+
+        return Optional.of(Deck.toDomain(deckEntity));
+    }
+
     public Player updateDeck(Long playerId, Long deckId, UpdateDeckRequest request) {
         PlayerEntity playerEntity = playerRepository.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
@@ -64,7 +76,6 @@ public class PlayerService {
                 .orElseThrow(() -> new DeckNotFoundException(deckId));
 
         deckEntity.setName(request.name());
-        deckEntity.setCommander(request.commander());
         deckEntity.setBracket(request.bracket());
         deckEntity.setIsActive(request.isActive());
 

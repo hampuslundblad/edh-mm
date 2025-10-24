@@ -43,6 +43,7 @@ export const Route = createFileRoute("/player/$id/")({
 
 function RouteComponent() {
   const player: GetPlayerResponse = Route.useLoaderData()
+
   const playerHasDecks = player.decks.length > 0
   return (
     <div className="flex flex-col gap-4 p-2">
@@ -57,6 +58,7 @@ function RouteComponent() {
           player.decks.map((deck, index) => (
             <DeckCard
               key={index}
+              deckId={deck.id}
               name={deck.name}
               bracket={deck.bracket}
               isActive={deck.isActive}
@@ -73,12 +75,19 @@ function RouteComponent() {
 
 type DeckCardProps = {
   playerId: string
+  deckId: string
   name: string
   bracket: string
   isActive: boolean
 }
 
-const DeckCard = ({ playerId, name, bracket, isActive }: DeckCardProps) => {
+const DeckCard = ({
+  playerId,
+  deckId,
+  name,
+  bracket,
+  isActive,
+}: DeckCardProps) => {
   const [isChecked, setIsChecked] = useState(isActive)
   return (
     <div className="p-2 border rounded md:w-1/3">
@@ -88,7 +97,7 @@ const DeckCard = ({ playerId, name, bracket, isActive }: DeckCardProps) => {
           <p>Bracket: {bracket}</p>
         </div>
         <div className="flex items-center gap-8">
-          <EditIcon playerId={playerId} deckId={"1337"} />
+          <EditIcon playerId={playerId} deckId={deckId} />
           <Switch
             checked={isChecked}
             onCheckedChange={(checked) => {
@@ -112,6 +121,7 @@ const EditIcon = ({
     <Tooltip>
       <TooltipTrigger>
         <Link
+          from="/player/$id"
           to={"/player/$id/edit/$deckId"}
           params={{ id: playerId, deckId: deckId }}
         >
