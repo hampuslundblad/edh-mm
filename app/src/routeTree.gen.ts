@@ -14,7 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as PlayersImport } from './routes/players'
 import { Route as BracketInfoImport } from './routes/bracket-info'
 import { Route as IndexImport } from './routes/index'
-import { Route as GameIndexImport } from './routes/game.index'
+import { Route as GameIndexImport } from './routes/game/index'
+import { Route as GameGameIdImport } from './routes/game/$gameId'
 import { Route as PlayerIdIndexImport } from './routes/player.$id.index'
 import { Route as PlayerIdDeckImport } from './routes/player.$id.deck'
 import { Route as PlayerIdEditDeckIdImport } from './routes/player.$id.edit.$deckId'
@@ -42,6 +43,12 @@ const IndexRoute = IndexImport.update({
 const GameIndexRoute = GameIndexImport.update({
   id: '/game/',
   path: '/game/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GameGameIdRoute = GameGameIdImport.update({
+  id: '/game/$gameId',
+  path: '/game/$gameId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayersImport
       parentRoute: typeof rootRoute
     }
+    '/game/$gameId': {
+      id: '/game/$gameId'
+      path: '/game/$gameId'
+      fullPath: '/game/$gameId'
+      preLoaderRoute: typeof GameGameIdImport
+      parentRoute: typeof rootRoute
+    }
     '/game/': {
       id: '/game/'
       path: '/game'
@@ -125,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
+  '/game/$gameId': typeof GameGameIdRoute
   '/game': typeof GameIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id': typeof PlayerIdIndexRoute
@@ -135,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
+  '/game/$gameId': typeof GameGameIdRoute
   '/game': typeof GameIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id': typeof PlayerIdIndexRoute
@@ -146,6 +162,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
+  '/game/$gameId': typeof GameGameIdRoute
   '/game/': typeof GameIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id/': typeof PlayerIdIndexRoute
@@ -158,6 +175,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bracket-info'
     | '/players'
+    | '/game/$gameId'
     | '/game'
     | '/player/$id/deck'
     | '/player/$id'
@@ -167,6 +185,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bracket-info'
     | '/players'
+    | '/game/$gameId'
     | '/game'
     | '/player/$id/deck'
     | '/player/$id'
@@ -176,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bracket-info'
     | '/players'
+    | '/game/$gameId'
     | '/game/'
     | '/player/$id/deck'
     | '/player/$id/'
@@ -187,6 +207,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BracketInfoRoute: typeof BracketInfoRoute
   PlayersRoute: typeof PlayersRoute
+  GameGameIdRoute: typeof GameGameIdRoute
   GameIndexRoute: typeof GameIndexRoute
   PlayerIdDeckRoute: typeof PlayerIdDeckRoute
   PlayerIdIndexRoute: typeof PlayerIdIndexRoute
@@ -197,6 +218,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BracketInfoRoute: BracketInfoRoute,
   PlayersRoute: PlayersRoute,
+  GameGameIdRoute: GameGameIdRoute,
   GameIndexRoute: GameIndexRoute,
   PlayerIdDeckRoute: PlayerIdDeckRoute,
   PlayerIdIndexRoute: PlayerIdIndexRoute,
@@ -216,6 +238,7 @@ export const routeTree = rootRoute
         "/",
         "/bracket-info",
         "/players",
+        "/game/$gameId",
         "/game/",
         "/player/$id/deck",
         "/player/$id/",
@@ -231,8 +254,11 @@ export const routeTree = rootRoute
     "/players": {
       "filePath": "players.tsx"
     },
+    "/game/$gameId": {
+      "filePath": "game/$gameId.tsx"
+    },
     "/game/": {
-      "filePath": "game.index.tsx"
+      "filePath": "game/index.tsx"
     },
     "/player/$id/deck": {
       "filePath": "player.$id.deck.tsx"

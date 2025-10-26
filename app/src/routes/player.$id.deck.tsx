@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { useQueryClient } from "@tanstack/react-query"
 import BracketSelect from "@/components/BracketSelect"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +16,8 @@ export const Route = createFileRoute("/player/$id/deck")({
 
 function RouteComponent() {
   const { id } = Route.useParams()
+
+  const queryClient = useQueryClient()
 
   const addDeckMutation = useAddDeck()
 
@@ -34,6 +37,7 @@ function RouteComponent() {
 
   useEffect(() => {
     if (addDeckMutation.isSuccess) {
+      queryClient.invalidateQueries({ queryKey: ["all-players"] })
       toast.success("Deck added successfully")
       navigate({ to: "/player/$id", params: { id } })
     }

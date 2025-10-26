@@ -86,7 +86,7 @@ const CreatePlayerModal = () => {
   return (
     <div className="p-2">
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button>Create Player</Button>
         </DialogTrigger>
         <DialogContent>
