@@ -4,6 +4,7 @@ import com.hampuslundblad.edh.deck.Bracket;
 
 public record UpdateDeckRequest(
     String name,
+    String commander,
     Bracket bracket,
     Boolean isActive
 ) {

@@ -162,7 +162,7 @@ const DeletePlayerModal = ({ playerId }: { playerId: string }) => {
   return (
     <div className="p-2">
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button variant={"destructive"}>Delete player</Button>
         </DialogTrigger>
         <DialogContent>

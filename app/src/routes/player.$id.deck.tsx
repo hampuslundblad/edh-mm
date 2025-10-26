@@ -1,6 +1,5 @@
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
-import { ArrowLeft } from "lucide-react"
 import { toast } from "sonner"
 import BracketSelect from "@/components/BracketSelect"
 import { Button } from "@/components/ui/button"

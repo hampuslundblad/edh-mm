@@ -7,6 +7,7 @@ export default function Header() {
         <div className="px-2 font-bold text-lg">
           <HeaderLink to="/">Skapa spel</HeaderLink>|
           <HeaderLink to="/players">Spelare</HeaderLink>|
+          <HeaderLink to="/game"> Nytt spel 2</HeaderLink>
         </div>
       </nav>
     </header>

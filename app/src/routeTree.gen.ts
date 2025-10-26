@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as PlayersImport } from './routes/players'
 import { Route as BracketInfoImport } from './routes/bracket-info'
 import { Route as IndexImport } from './routes/index'
+import { Route as GameIndexImport } from './routes/game.index'
 import { Route as PlayerIdIndexImport } from './routes/player.$id.index'
 import { Route as PlayerIdDeckImport } from './routes/player.$id.deck'
 import { Route as PlayerIdEditDeckIdImport } from './routes/player.$id.edit.$deckId'
@@ -35,6 +36,12 @@ const BracketInfoRoute = BracketInfoImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GameIndexRoute = GameIndexImport.update({
+  id: '/game/',
+  path: '/game/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -81,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayersImport
       parentRoute: typeof rootRoute
     }
+    '/game/': {
+      id: '/game/'
+      path: '/game'
+      fullPath: '/game'
+      preLoaderRoute: typeof GameIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/player/$id/deck': {
       id: '/player/$id/deck'
       path: '/player/$id/deck'
@@ -111,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
+  '/game': typeof GameIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id': typeof PlayerIdIndexRoute
   '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
@@ -120,6 +135,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
+  '/game': typeof GameIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id': typeof PlayerIdIndexRoute
   '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
@@ -130,6 +146,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
   '/players': typeof PlayersRoute
+  '/game/': typeof GameIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id/': typeof PlayerIdIndexRoute
   '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
@@ -141,6 +158,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bracket-info'
     | '/players'
+    | '/game'
     | '/player/$id/deck'
     | '/player/$id'
     | '/player/$id/edit/$deckId'
@@ -149,6 +167,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bracket-info'
     | '/players'
+    | '/game'
     | '/player/$id/deck'
     | '/player/$id'
     | '/player/$id/edit/$deckId'
@@ -157,6 +176,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bracket-info'
     | '/players'
+    | '/game/'
     | '/player/$id/deck'
     | '/player/$id/'
     | '/player/$id/edit/$deckId'
@@ -167,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BracketInfoRoute: typeof BracketInfoRoute
   PlayersRoute: typeof PlayersRoute
+  GameIndexRoute: typeof GameIndexRoute
   PlayerIdDeckRoute: typeof PlayerIdDeckRoute
   PlayerIdIndexRoute: typeof PlayerIdIndexRoute
   PlayerIdEditDeckIdRoute: typeof PlayerIdEditDeckIdRoute
@@ -176,6 +197,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BracketInfoRoute: BracketInfoRoute,
   PlayersRoute: PlayersRoute,
+  GameIndexRoute: GameIndexRoute,
   PlayerIdDeckRoute: PlayerIdDeckRoute,
   PlayerIdIndexRoute: PlayerIdIndexRoute,
   PlayerIdEditDeckIdRoute: PlayerIdEditDeckIdRoute,
@@ -194,6 +216,7 @@ export const routeTree = rootRoute
         "/",
         "/bracket-info",
         "/players",
+        "/game/",
         "/player/$id/deck",
         "/player/$id/",
         "/player/$id/edit/$deckId"
@@ -207,6 +230,9 @@ export const routeTree = rootRoute
     },
     "/players": {
       "filePath": "players.tsx"
+    },
+    "/game/": {
+      "filePath": "game.index.tsx"
     },
     "/player/$id/deck": {
       "filePath": "player.$id.deck.tsx"

@@ -26,10 +26,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(controllers = PlayerController.class)
 @Import({PlayerExceptionHandler.class, DeckExceptionHandler.class})
@@ -43,21 +41,6 @@ class PlayerControllerTest {
 
     @MockBean
     private PlayerService playerService;
-
-    // @Test
-    // void addDeckToPlayer_whenDuplicateDeckName_returnsConflict() throws Exception {
-    //     // Arrange: make the service throw the exception
-    //     when(playerService.addDeckToPlayer(anyLong(), any()))
-    //         .thenThrow(new DuplicateDeckNameException("Duplicate Deck"));
-
-    //     AddDeckToPlayerRequest request = new AddDeckToPlayerRequest("Duplicate Deck", Bracket.TWO);
-
-    //     mockMvc.perform(post("/player/1/deck")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(request)))
-    //             .andExpect(status().isConflict());
-    // }
-
 
 
     @Test

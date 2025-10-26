@@ -68,7 +68,12 @@ export const PlayersApi = {
   updateDeck: async (
     playerId: string,
     deckId: string,
-    request: { name: string; bracket: Bracket; isActive: boolean },
+    request: {
+      name: string
+      commander: string
+      bracket: Bracket
+      isActive: boolean
+    },
   ) => {
     const response = await fetch(`/api/player/${playerId}/deck/${deckId}`, {
       method: "PATCH",
@@ -97,6 +102,16 @@ export const PlayersApi = {
     })
     if (!response.ok) {
       throw new Error(`Error deleting player: ${response.statusText}`)
+    }
+    return Promise.resolve()
+  },
+
+  deleteDeck: async (playerId: string, deckId: string) => {
+    const response = await fetch(`/api/player/${playerId}/deck/${deckId}`, {
+      method: "DELETE",
+    })
+    if (!response.ok) {
+      throw new Error(`Error deleting deck: ${response.statusText}`)
     }
     return Promise.resolve()
   },
