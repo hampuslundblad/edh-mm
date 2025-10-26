@@ -18,7 +18,6 @@ public record GameResponse(
         String playerName,
         Long deckId,
         String deckName,
-        String commander,
-        Boolean isWinner
+        String commander
     ) {}
 }

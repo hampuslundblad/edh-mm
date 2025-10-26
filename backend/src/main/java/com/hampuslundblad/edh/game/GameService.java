@@ -61,6 +61,20 @@ public class GameService {
             .toList();
     }
 
+    public List<GameResponse> getFinishedGames() {
+        return gameRepository.findByStatusOrderByCreatedAtDesc(GameStatus.FINISHED).stream()
+            .map(GameEntity::toDomainModel)
+            .map(this::mapToGameResponse)
+            .toList();
+    }
+
+    public List<GameResponse> getCancelledGames() {
+        return gameRepository.findByStatusOrderByCreatedAtDesc(GameStatus.CANCELLED).stream()
+            .map(GameEntity::toDomainModel)
+            .map(this::mapToGameResponse)
+            .toList();
+    }
+
     public Optional<GameResponse> getGameById(Long id) {
         return gameRepository.findById(id)
             .map(GameEntity::toDomainModel)
@@ -83,14 +97,30 @@ public class GameService {
         return mapToGameResponse(savedGame);
     }
 
-    public GameResponse nextRound(Long gameId) {
+    public GameResponse cancelGame(Long gameId) {
         GameEntity gameEntity = gameRepository.findById(gameId)
             .orElseThrow(() -> new RuntimeException("Game not found: " + gameId));
         
         // Convert to domain model and apply business logic
         Game domainGame = gameEntity.toDomainModel();
-        Game updatedGame = domainGame.nextRound();
+        Game cancelledGame = domainGame.cancelGame();
         
+        // Update entity from domain model
+        gameEntity.updateFromDomainModel(cancelledGame);
+        GameEntity savedGameEntity = gameRepository.save(gameEntity);
+        
+        Game savedGame = savedGameEntity.toDomainModel();
+        return mapToGameResponse(savedGame);
+    }
+
+    public GameResponse updateRound(Long gameId, int newRound) {
+        GameEntity gameEntity = gameRepository.findById(gameId)
+            .orElseThrow(() -> new RuntimeException("Game not found: " + gameId));
+        
+        // Convert to domain model and apply business logic
+        Game domainGame = gameEntity.toDomainModel();
+        Game updatedGame = domainGame.updateRound(newRound);
+
         // Update entity from domain model
         gameEntity.updateFromDomainModel(updatedGame);
         GameEntity savedGameEntity = gameRepository.save(gameEntity);
@@ -106,8 +136,7 @@ public class GameService {
                 gp.getPlayerName(),
                 gp.getDeckId(),
                 gp.getDeckName(),
-                gp.getCommander(),
-                game.getWinnerPlayerId() != null && game.getWinnerPlayerId().equals(gp.getPlayerId())
+                gp.getCommander()
             ))
             .toList();
 
@@ -120,8 +149,7 @@ public class GameService {
                 w.getPlayerName(),
                 w.getDeckId(),
                 w.getDeckName(),
-                w.getCommander(),
-                true
+                w.getCommander()                
             );
         }
 

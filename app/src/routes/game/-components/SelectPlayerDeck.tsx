@@ -18,7 +18,9 @@ const SelectPlayerDeck = ({ players, onDeckSelect }: SelectPlayerDeckProps) => {
     <div className="flex flex-col gap-4">
       {players.map((player) => (
         <div>
-          <Title variant="s"> Välj lek för {player.name} </Title>
+          <Title variant="s" className="mb-2">
+            Välj lek för {player.name}
+          </Title>
           <DeckSelect
             key={player.id}
             decks={player.decks}

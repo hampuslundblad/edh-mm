@@ -40,6 +40,18 @@ public class GameController {
         return ResponseEntity.ok(games);
     }
 
+    @GetMapping("/games/finished")
+    public ResponseEntity<List<GameResponse>> getFinishedGames() {
+        List<GameResponse> games = gameService.getFinishedGames();
+        return ResponseEntity.ok(games);
+    }
+
+    @GetMapping("/games/cancelled")
+    public ResponseEntity<List<GameResponse>> getCancelledGames() {
+        List<GameResponse> games = gameService.getCancelledGames();
+        return ResponseEntity.ok(games);
+    }
+
     @GetMapping("/game/{gameId}")
     public ResponseEntity<GameResponse> getGameById(@PathVariable Long gameId) {
         return gameService.getGameById(gameId)
@@ -55,9 +67,19 @@ public class GameController {
         return ResponseEntity.ok(game);
     }
 
-    @PatchMapping("/game/{gameId}/next-round")
-    public ResponseEntity<GameResponse> nextRound(@PathVariable Long gameId) {
-        GameResponse game = gameService.nextRound(gameId);
+    @PatchMapping("/game/{gameId}/cancel")
+    public ResponseEntity<GameResponse> cancelGame(@PathVariable Long gameId) {
+        try {
+            GameResponse game = gameService.cancelGame(gameId);
+            return ResponseEntity.ok(game);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/game/{gameId}/update-round")
+    public ResponseEntity<GameResponse> updateRound(@PathVariable Long gameId, @RequestParam int newRound) {
+        GameResponse game = gameService.updateRound(gameId, newRound);
         return ResponseEntity.ok(game);
     }
 }

@@ -15,6 +15,7 @@ import {
 import InputWithButton from "@/components/InputWithButton"
 import { useCreatePlayer } from "@/hooks/useCreatePlayer"
 import Layout from "@/components/Layout"
+import { Title } from "@/components/ui/title"
 
 export const Route = createFileRoute("/players")({
   component: () => (
@@ -36,14 +37,15 @@ function App() {
 
   if (isSuccess) {
     return (
-      <div className="">
-        <CreatePlayerModal />
-        <div className="flex flex-col gap-4">
+      <Layout>
+        <Title variant="xxl"> Players </Title>
+        <div className="flex flex-wrap gap-4 mt-8">
           {data.players.map((player) => (
             <PlayerLink name={player.name} id={player.id} key={player.id} />
           ))}
         </div>
-      </div>
+        <CreatePlayerModal />
+      </Layout>
     )
   }
   return <div className="p-2">No players found</div>

@@ -1,6 +1,6 @@
 // Game API types and functions
 
-export type GameStatus = "RUNNING" | "FINISHED"
+export type GameStatus = "RUNNING" | "FINISHED" | "CANCELLED"
 
 export type PlayerDeckSelection = {
   playerId: string
@@ -21,7 +21,6 @@ export type GamePlayerResponse = {
   deckId: string
   deckName: string
   commander: string
-  isWinner: boolean
 }
 
 export type GameResponse = {
@@ -65,6 +64,22 @@ export const GameApi = {
     return response.json()
   },
 
+  getFinishedGames: async (): Promise<Array<GameResponse>> => {
+    const response = await fetch("/api/games/finished")
+    if (!response.ok) {
+      throw new Error(`Error fetching finished games: ${response.statusText}`)
+    }
+    return response.json()
+  },
+
+  getCancelledGames: async (): Promise<Array<GameResponse>> => {
+    const response = await fetch("/api/games/cancelled")
+    if (!response.ok) {
+      throw new Error(`Error fetching cancelled games: ${response.statusText}`)
+    }
+    return response.json()
+  },
+
   getGameById: async (gameId: string): Promise<GameResponse> => {
     const response = await fetch(`/api/game/${gameId}`)
     if (!response.ok) {
@@ -90,10 +105,29 @@ export const GameApi = {
     return response.json()
   },
 
-  nextRound: async (gameId: string): Promise<GameResponse> => {
-    const response = await fetch(`/api/game/${gameId}/next-round`, {
+  cancelGame: async (gameId: string): Promise<GameResponse> => {
+    const response = await fetch(`/api/game/${gameId}/cancel`, {
       method: "PATCH",
     })
+    if (!response.ok) {
+      throw new Error(`Error cancelling game: ${response.statusText}`)
+    }
+    return response.json()
+  },
+
+  updateRound: async (
+    gameId: string,
+    newRound: number,
+  ): Promise<GameResponse> => {
+    const response = await fetch(
+      `/api/game/${gameId}/update-round?newRound=${newRound}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    )
     if (!response.ok) {
       throw new Error(`Error advancing to next round: ${response.statusText}`)
     }

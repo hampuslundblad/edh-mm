@@ -9,7 +9,7 @@ import { Title } from "@/components/ui/title"
 import { useAllPlayers } from "@/hooks/useAllPlayers"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useGameMutations } from "@/hooks/useGame"
+import { useGameMutations } from "@/hooks/useGameMutations"
 
 export const Route = createFileRoute("/game/")({
   component: RouteComponent,
@@ -54,7 +54,6 @@ function RouteComponent() {
   }, [createGameMutation.isError])
 
   const handlePlayerSelect = (players: Array<Player>) => {
-    console.log("Selected players:", players)
     setSelectedPlayers(players)
     // If a player is removed, remove them from playerDeckSelection as well
     setPlayerDeckSelection((prev) =>
@@ -84,6 +83,18 @@ function RouteComponent() {
 
   const handleStartGame = () => {
     console.log("Starting game with decks:", playerDeckSelection)
+
+    const allPlayersHaveDecks = selectedPlayers.every((player) =>
+      playerDeckSelection.some((selection) => selection.playerId === player.id),
+    )
+
+    if (!allPlayersHaveDecks) {
+      toast.error(
+        "Please select decks for all players before starting the game.",
+      )
+      return
+    }
+
     createGameMutation.mutate({ playerDeckSelections: playerDeckSelection })
   }
 
@@ -96,7 +107,7 @@ function RouteComponent() {
 
   return (
     <Layout>
-      <Title variant="xxl">Nytt spel 2</Title>
+      <Title variant="xxl">New game</Title>
       {/** Select players */}
       <div className="flex flex-col gap-4 mt-8">
         <p> Choose players </p>
@@ -112,7 +123,9 @@ function RouteComponent() {
           onDeckSelect={handlePlayerDeckSelect}
         />
       </div>
-      <Button onClick={handleStartGame}> Start game! </Button>
+      {selectedPlayers.length > 0 && playerDeckSelection.length > 0 && (
+        <Button onClick={handleStartGame}> Start game! </Button>
+      )}
     </Layout>
   )
 }

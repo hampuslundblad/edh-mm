@@ -1,5 +1,9 @@
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="lg:md:mx-auto m-4 max-w-7xl pt-2">{children}</div>
+  return (
+    <div className="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+      {children}
+    </div>
+  )
 }
 
 export default Layout

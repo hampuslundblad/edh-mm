@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 import { ChevronsUpDown } from "lucide-react"
 import { numbersOfDecksWithinBracket } from "@/utils/players"
 import { Button } from "@/components/ui/button"
@@ -15,6 +15,9 @@ import BracketSelect from "@/components/BracketSelect"
 import Layout from "@/components/Layout"
 
 export const Route = createFileRoute("/")({
+  loader: () => {
+    throw redirect({ to: "/game" })
+  },
   component: () => (
     <Layout>
       <RouteComponent />

@@ -35,6 +35,9 @@ public class Game {
         if (this.status == GameStatus.FINISHED) {
             throw new IllegalStateException("Game is already finished");
         }
+        if (this.status == GameStatus.CANCELLED) {
+            throw new IllegalStateException("Game is cancelled and cannot be finished");
+        }
 
         // Validate that the winner is actually in this game
         boolean winnerFound = gamePlayers.stream()
@@ -48,13 +51,25 @@ public class Game {
                        this.currentRound, this.createdAt, LocalDateTime.now(), winnerPlayerId);
     }
 
-    public Game nextRound() {
+    public Game cancelGame() {
+        if (this.status == GameStatus.FINISHED) {
+            throw new IllegalStateException("Game is already finished and cannot be cancelled");
+        }
+        if (this.status == GameStatus.CANCELLED) {
+            throw new IllegalStateException("Game is already cancelled");
+        }
+
+        return new Game(this.id, this.gamePlayers, GameStatus.CANCELLED, 
+                       this.currentRound, this.createdAt, LocalDateTime.now(), null);
+    }
+
+    public Game updateRound(int round) {
         if (this.status != GameStatus.RUNNING) {
             throw new IllegalStateException("Cannot advance round - game is not running");
         }
 
         return new Game(this.id, this.gamePlayers, this.status, 
-                       this.currentRound + 1, this.createdAt, this.finishedAt, this.winnerPlayerId);
+                       round, this.createdAt, this.finishedAt, this.winnerPlayerId);
     }
 
     public Optional<GamePlayer> getWinner() {
@@ -73,6 +88,10 @@ public class Game {
 
     public boolean isRunning() {
         return status == GameStatus.RUNNING;
+    }
+
+    public boolean isCancelled() {
+        return status == GameStatus.CANCELLED;
     }
 
     public int getPlayerCount() {
