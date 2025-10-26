@@ -19,13 +19,13 @@ const BracketSelect = ({ decks, onSelect }: BracketSelectProps) => {
   return (
     <Select onValueChange={onSelect}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={decks[0]?.name} />
+        <SelectValue />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Choose a deck:</SelectLabel>
           {decks.map((deck: Deck) => (
-            <SelectItem key={deck.id} value={deck.name}>
+            <SelectItem key={deck.id} value={deck.id}>
               {deck.name}
             </SelectItem>
           ))}

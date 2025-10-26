@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useParams } from "@tanstack/react-router"
 import RoundCounter from "./-components/RoundCounter"
 
 export const Route = createFileRoute("/game/$gameId")({
@@ -6,9 +6,11 @@ export const Route = createFileRoute("/game/$gameId")({
 })
 
 function RouteComponent() {
+  const { gameId } = useParams({ from: "/game/$gameId" })
+
   return (
     <div>
-      <RoundCounter />
+      <RoundCounter gameId={gameId} />
     </div>
   )
 }
