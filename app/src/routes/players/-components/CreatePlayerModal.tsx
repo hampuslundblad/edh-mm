@@ -1,9 +1,8 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { toast } from "sonner"
 import { useEffect, useState } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { useAllPlayers } from "@/hooks/useAllPlayers"
-import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
+
+import InputWithButton from "@/components/InputWithButton"
 import {
   Dialog,
   DialogContent,
@@ -12,59 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import InputWithButton from "@/components/InputWithButton"
 import { useCreatePlayer } from "@/hooks/useCreatePlayer"
-import Layout from "@/components/Layout"
-import { Title } from "@/components/ui/title"
+import { Button } from "@/components/ui/button"
 
-export const Route = createFileRoute("/players")({
-  component: () => (
-    <Layout>
-      <App />
-    </Layout>
-  ),
-})
-
-function App() {
-  const { data, isLoading, isError, isSuccess } = useAllPlayers()
-
-  if (isLoading) {
-    return <div className="p-2">Loading...</div>
-  }
-  if (isError) {
-    return <div className="p-2">Error loading players</div>
-  }
-
-  if (isSuccess) {
-    return (
-      <Layout>
-        <Title variant="xxl"> Players </Title>
-        <div className="flex flex-wrap gap-4 mt-8">
-          {data.players.map((player) => (
-            <PlayerLink name={player.name} id={player.id} key={player.id} />
-          ))}
-        </div>
-        <CreatePlayerModal />
-      </Layout>
-    )
-  }
-  return <div className="p-2">No players found</div>
-}
-const PlayerLink = ({ id, name }: { id: string; name: string }) => {
-  return (
-    <Link
-      className="self-start"
-      to="/player/$id"
-      params={{ id }}
-      preload={false}
-    >
-      <div className="rounded-lg shadow p-4 border hover:bg-orange-500 border-gray-200 min-w-[250px] min-h-[100px]">
-        <span className="text-lg font-semibold text-white">{name}</span>
-      </div>
-    </Link>
-  )
-}
-const CreatePlayerModal = () => {
+export const CreatePlayerModal = () => {
   const createPlayerMutation = useCreatePlayer()
   const [modalOpen, setModalOpen] = useState(false)
   const queryClient = useQueryClient()

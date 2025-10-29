@@ -11,24 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PlayersImport } from './routes/players'
 import { Route as BracketInfoImport } from './routes/bracket-info'
 import { Route as IndexImport } from './routes/index'
+import { Route as PlayersIndexImport } from './routes/players/index'
 import { Route as GameIndexImport } from './routes/game/index'
 import { Route as GameRunningImport } from './routes/game/running'
 import { Route as GamePastImport } from './routes/game/past'
 import { Route as GameGameIdImport } from './routes/game/$gameId'
-import { Route as PlayerIdIndexImport } from './routes/player.$id.index'
-import { Route as PlayerIdDeckImport } from './routes/player.$id.deck'
-import { Route as PlayerIdEditDeckIdImport } from './routes/player.$id.edit.$deckId'
+import { Route as PlayerIdIndexImport } from './routes/player/$id.index'
+import { Route as PlayerIdDeckImport } from './routes/player/$id.deck'
+import { Route as PlayerIdEditDeckIdImport } from './routes/player/$id.edit.$deckId'
 
 // Create/Update Routes
-
-const PlayersRoute = PlayersImport.update({
-  id: '/players',
-  path: '/players',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const BracketInfoRoute = BracketInfoImport.update({
   id: '/bracket-info',
@@ -39,6 +33,12 @@ const BracketInfoRoute = BracketInfoImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlayersIndexRoute = PlayersIndexImport.update({
+  id: '/players/',
+  path: '/players/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,13 +102,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BracketInfoImport
       parentRoute: typeof rootRoute
     }
-    '/players': {
-      id: '/players'
-      path: '/players'
-      fullPath: '/players'
-      preLoaderRoute: typeof PlayersImport
-      parentRoute: typeof rootRoute
-    }
     '/game/$gameId': {
       id: '/game/$gameId'
       path: '/game/$gameId'
@@ -135,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/game'
       fullPath: '/game'
       preLoaderRoute: typeof GameIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/players/': {
+      id: '/players/'
+      path: '/players'
+      fullPath: '/players'
+      preLoaderRoute: typeof PlayersIndexImport
       parentRoute: typeof rootRoute
     }
     '/player/$id/deck': {
@@ -166,11 +166,11 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
-  '/players': typeof PlayersRoute
   '/game/$gameId': typeof GameGameIdRoute
   '/game/past': typeof GamePastRoute
   '/game/running': typeof GameRunningRoute
   '/game': typeof GameIndexRoute
+  '/players': typeof PlayersIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id': typeof PlayerIdIndexRoute
   '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
@@ -179,11 +179,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
-  '/players': typeof PlayersRoute
   '/game/$gameId': typeof GameGameIdRoute
   '/game/past': typeof GamePastRoute
   '/game/running': typeof GameRunningRoute
   '/game': typeof GameIndexRoute
+  '/players': typeof PlayersIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id': typeof PlayerIdIndexRoute
   '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
@@ -193,11 +193,11 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/bracket-info': typeof BracketInfoRoute
-  '/players': typeof PlayersRoute
   '/game/$gameId': typeof GameGameIdRoute
   '/game/past': typeof GamePastRoute
   '/game/running': typeof GameRunningRoute
   '/game/': typeof GameIndexRoute
+  '/players/': typeof PlayersIndexRoute
   '/player/$id/deck': typeof PlayerIdDeckRoute
   '/player/$id/': typeof PlayerIdIndexRoute
   '/player/$id/edit/$deckId': typeof PlayerIdEditDeckIdRoute
@@ -208,11 +208,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/bracket-info'
-    | '/players'
     | '/game/$gameId'
     | '/game/past'
     | '/game/running'
     | '/game'
+    | '/players'
     | '/player/$id/deck'
     | '/player/$id'
     | '/player/$id/edit/$deckId'
@@ -220,11 +220,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/bracket-info'
-    | '/players'
     | '/game/$gameId'
     | '/game/past'
     | '/game/running'
     | '/game'
+    | '/players'
     | '/player/$id/deck'
     | '/player/$id'
     | '/player/$id/edit/$deckId'
@@ -232,11 +232,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/bracket-info'
-    | '/players'
     | '/game/$gameId'
     | '/game/past'
     | '/game/running'
     | '/game/'
+    | '/players/'
     | '/player/$id/deck'
     | '/player/$id/'
     | '/player/$id/edit/$deckId'
@@ -246,11 +246,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BracketInfoRoute: typeof BracketInfoRoute
-  PlayersRoute: typeof PlayersRoute
   GameGameIdRoute: typeof GameGameIdRoute
   GamePastRoute: typeof GamePastRoute
   GameRunningRoute: typeof GameRunningRoute
   GameIndexRoute: typeof GameIndexRoute
+  PlayersIndexRoute: typeof PlayersIndexRoute
   PlayerIdDeckRoute: typeof PlayerIdDeckRoute
   PlayerIdIndexRoute: typeof PlayerIdIndexRoute
   PlayerIdEditDeckIdRoute: typeof PlayerIdEditDeckIdRoute
@@ -259,11 +259,11 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BracketInfoRoute: BracketInfoRoute,
-  PlayersRoute: PlayersRoute,
   GameGameIdRoute: GameGameIdRoute,
   GamePastRoute: GamePastRoute,
   GameRunningRoute: GameRunningRoute,
   GameIndexRoute: GameIndexRoute,
+  PlayersIndexRoute: PlayersIndexRoute,
   PlayerIdDeckRoute: PlayerIdDeckRoute,
   PlayerIdIndexRoute: PlayerIdIndexRoute,
   PlayerIdEditDeckIdRoute: PlayerIdEditDeckIdRoute,
@@ -281,11 +281,11 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/bracket-info",
-        "/players",
         "/game/$gameId",
         "/game/past",
         "/game/running",
         "/game/",
+        "/players/",
         "/player/$id/deck",
         "/player/$id/",
         "/player/$id/edit/$deckId"
@@ -296,9 +296,6 @@ export const routeTree = rootRoute
     },
     "/bracket-info": {
       "filePath": "bracket-info.tsx"
-    },
-    "/players": {
-      "filePath": "players.tsx"
     },
     "/game/$gameId": {
       "filePath": "game/$gameId.tsx"
@@ -312,14 +309,17 @@ export const routeTree = rootRoute
     "/game/": {
       "filePath": "game/index.tsx"
     },
+    "/players/": {
+      "filePath": "players/index.tsx"
+    },
     "/player/$id/deck": {
-      "filePath": "player.$id.deck.tsx"
+      "filePath": "player/$id.deck.tsx"
     },
     "/player/$id/": {
-      "filePath": "player.$id.index.tsx"
+      "filePath": "player/$id.index.tsx"
     },
     "/player/$id/edit/$deckId": {
-      "filePath": "player.$id.edit.$deckId.tsx"
+      "filePath": "player/$id.edit.$deckId.tsx"
     }
   }
 }
