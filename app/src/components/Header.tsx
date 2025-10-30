@@ -21,37 +21,40 @@ export default function Header() {
       </nav>
 
       {/* Mobile Hamburger Button */}
-      <Button
-        variant="ghost"
-        size="sm"
-        className="md:hidden text-white hover:bg-gray-700"
-        onClick={toggleMenu}
-        aria-label="Toggle menu"
-      >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div className="md:hidden flex items-center">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="md:hidden"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
         >
-          {/* X icon or hamburger icon */}
-          {isMenuOpen ? (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          ) : (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          )}
-        </svg>
-      </Button>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            {/* X icon or hamburger icon */}
+            {isMenuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+          <p className="font-bold text-m"> Menu </p>
+        </Button>
+      </div>
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
@@ -88,7 +91,7 @@ const HeaderLink = ({
   return (
     <Link
       to={to}
-      className="block p-2 rounded-md hover:underline text-white hover:bg-gray-700 md:inline-block"
+      className="block p-2 rounded-md hover:underline   md:inline-block"
       activeProps={{ className: "underline" }}
       onClick={onClick}
     >

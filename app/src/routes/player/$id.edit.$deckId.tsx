@@ -22,7 +22,7 @@ const deckQueryOptions = (id: string, playerId: string) =>
 
 export const Route = createFileRoute("/player/$id/edit/$deckId")({
   component: () => (
-    <Layout>
+    <Layout title="Edit deck">
       <RouteComponent />
     </Layout>
   ),

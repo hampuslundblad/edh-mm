@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { CheckIcon, InfoIcon, XIcon } from "lucide-react"
+import { getHeaderTitle } from "@/utils/meta"
 
 export const Route = createFileRoute("/bracket-info")({
+  head: () => getHeaderTitle("Bracket Information"),
   component: RouteComponent,
 })
 

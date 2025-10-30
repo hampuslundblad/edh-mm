@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
     throw redirect({ to: "/game" })
   },
   component: () => (
-    <Layout>
+    <Layout title="Create game">
       <RouteComponent />
     </Layout>
   ),
@@ -89,8 +89,6 @@ function RouteComponent() {
   return (
     <div className="flex flex-col items-center justify-center ">
       <div className="flex flex-col m-auto gap-4 p-2">
-        <h1 className="text-2xl font-semibold mb-4">Create Game</h1>
-
         <Collapsible
           onOpenChange={setIsSettingsOpen}
           open={isSettingsOpen}

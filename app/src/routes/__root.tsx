@@ -1,21 +1,26 @@
-import { Outlet, createRootRoute } from "@tanstack/react-router"
+import { HeadContent, Outlet, createRootRoute } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 
 import Header from "@/components/Header"
 import { isDevelopment } from "@/utils/env"
 import { Toaster } from "@/components/ui/sonner"
 import Footer from "@/components/Footer"
+import { getHeaderTitle } from "@/utils/meta"
 
 export const Route = createRootRoute({
+  head: () => getHeaderTitle("New Game"),
   component: () => (
-    <Main>
-      <Header />
-      {/** Ugly solution but remove 3rem for the footer's height**/}
-      <div className="h-[calc(100vh-3rem)] flex-1 overflow-y-auto">
-        <Toaster />
-        <Outlet />
-      </div>
-    </Main>
+    <>
+      <HeadContent />
+      <Main>
+        <Header />
+        {/** Ugly solution but remove 3rem for the footer's height**/}
+        <div className="h-[calc(100vh-3rem)] flex-1 overflow-y-auto">
+          <Toaster />
+          <Outlet />
+        </div>
+      </Main>
+    </>
   ),
 
   errorComponent: (error) => (

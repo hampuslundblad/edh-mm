@@ -11,11 +11,11 @@ interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 const variantStyles: Record<TitleVariant, string> = {
-  xxl: "text-2xl font-bold tracking-tight",
-  xl: "text-xl font-bold tracking-tight",
-  l: "text-lg font-bold tracking-tight",
-  m: "text-base font-bold tracking-tight",
-  s: "text-sm font-bold tracking-tight",
+  xxl: "text-2xl font-bold ",
+  xl: "text-xl font-bold ",
+  l: "text-lg font-bold ",
+  m: "text-base font-bold ",
+  s: "text-sm font-bold ",
 }
 
 const Title = forwardRef<HTMLHeadingElement, TitleProps>(

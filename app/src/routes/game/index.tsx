@@ -12,7 +12,11 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useGameMutations } from "@/hooks/useGameMutations"
 
 export const Route = createFileRoute("/game/")({
-  component: RouteComponent,
+  component: () => (
+    <Layout title="Create game">
+      <RouteComponent />
+    </Layout>
+  ),
 })
 
 type SelectedPlayerWithDeck = {
@@ -106,8 +110,7 @@ function RouteComponent() {
   }
 
   return (
-    <Layout>
-      <Title variant="xxl">New game</Title>
+    <>
       {/** Select players */}
       <div className="flex flex-col gap-4 mt-8">
         <p> Choose players </p>
@@ -126,6 +129,6 @@ function RouteComponent() {
       {selectedPlayers.length > 0 && playerDeckSelection.length > 0 && (
         <Button onClick={handleStartGame}> Start game! </Button>
       )}
-    </Layout>
+    </>
   )
 }
