@@ -13,7 +13,6 @@ export const DeckCard = ({
   deckId,
   name,
   bracket,
-  isActive,
 }: DeckCardProps) => {
   // const [isChecked, setIsChecked] = useState(isActive)
   return (

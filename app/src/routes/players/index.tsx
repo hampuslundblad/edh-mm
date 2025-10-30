@@ -3,7 +3,6 @@ import { PlayerLink } from "./-components/PlayerLink"
 import { CreatePlayerModal } from "./-components/CreatePlayerModal"
 import { useAllPlayers } from "@/hooks/useAllPlayers"
 import Layout from "@/components/Layout"
-import { Title } from "@/components/ui/title"
 import { getHeaderTitle } from "@/utils/meta"
 
 export const Route = createFileRoute("/players/")({
