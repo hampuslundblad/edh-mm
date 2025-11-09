@@ -25,7 +25,7 @@ const BracketSelect = ({ selectedBracket, onSelect }: BracketSelectProps) => {
           <SelectLabel>Choose a bracket:</SelectLabel>
           <SelectItem value={Bracket.Two}>Bracket 2</SelectItem>
           <SelectItem value={Bracket.Three}>Bracket 3</SelectItem>
-          <SelectItem value={Bracket.ThreePlus}>Bracket 3+</SelectItem>
+          <SelectItem value={Bracket.Four}>Bracket 4</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

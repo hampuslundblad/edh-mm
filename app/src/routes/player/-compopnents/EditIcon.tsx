@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-export const EditIcon = ({
+export const EditIconLink = ({
   playerId,
   deckId,
 }: {

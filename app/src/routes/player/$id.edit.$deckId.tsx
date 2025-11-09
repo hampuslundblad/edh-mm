@@ -13,6 +13,14 @@ import { queryClient } from "@/queryClient"
 import { PlayersApi } from "@/api/player"
 import Back from "@/components/Back"
 import { useUpdateDeck } from "@/hooks/useUpdateDeck"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const deckQueryOptions = (id: string, playerId: string) =>
   queryOptions({
@@ -22,7 +30,7 @@ const deckQueryOptions = (id: string, playerId: string) =>
 
 export const Route = createFileRoute("/player/$id/edit/$deckId")({
   component: () => (
-    <Layout title="Edit deck">
+    <Layout>
       <RouteComponent />
     </Layout>
   ),
@@ -62,20 +70,38 @@ function RouteComponent() {
   return (
     <div className="flex flex-col gap-4 p-2">
       <Back to={`/player/${id}`} />
-      <Label>Deck Name</Label>
-      <Input
-        className="w-1/5 self-start"
-        value={deckName}
-        onChange={(e) => setDeckName(e.target.value)}
-      />
-      <Label>Bracket</Label>
-      <BracketSelect
-        selectedBracket={selectedBracket}
-        onSelect={setSelectedBracket}
-      />
-      <Button className="self-start" onClick={handleSave}>
-        Save
-      </Button>
+
+      <Card className="lg:md:w-1/2">
+        <CardHeader>
+          <CardTitle>Edit Deck</CardTitle>
+          <CardDescription>
+            Make changes to your deck and click "Save" to update.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-8">
+          <div>
+            <Label className="mb-4">Deck Name</Label>
+            <Input
+              className="lg:md:w-1/4 self-start"
+              value={deckName}
+              onChange={(e) => setDeckName(e.target.value)}
+            />
+          </div>
+          <div>
+            <Label className="mb-4">Bracket</Label>
+            <BracketSelect
+              selectedBracket={selectedBracket}
+              onSelect={setSelectedBracket}
+            />
+          </div>
+        </CardContent>
+        <CardFooter className="flex gap-4">
+          <Button className="self-start" onClick={handleSave}>
+            Save
+          </Button>
+          <Button variant={"destructive"}>Delete</Button>
+        </CardFooter>
+      </Card>
     </div>
   )
 }

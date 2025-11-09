@@ -1,6 +1,13 @@
 import { Link } from "@tanstack/react-router"
 import { ArrowRight } from "lucide-react"
 import type { Player } from "@/api/player"
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 export const PlayerLink = ({ player }: { player: Player }) => {
   return (
@@ -10,20 +17,18 @@ export const PlayerLink = ({ player }: { player: Player }) => {
       params={{ id: player.id }}
       preload={false}
     >
-      <div className="border-bg-gradient rounded-lg shadow p-4 border border-bg-border-primary hover:bg-gradient-to-r hover:from-dark hover:to-light min-w-[250px] min-h-[100px] transition-all duration-300">
-        <div className="container flex justify-between items-center">
-          <div>
-            <p className="text-lg font-semibold text-white">{player.name}</p>
-            <p className="text-sm text-text-muted">
-              Has {player.decks.length}{" "}
-              {player.decks.length === 1 ? "deck" : "decks"}
-            </p>
-          </div>
-          <div>
-            <ArrowRight className="inline-block ml-2 text-text-muted" />
-          </div>
-        </div>
-      </div>
+      <Card className="w-80 lg:md:w-sm border-solid border-t-2 border-highlight ">
+        <CardHeader>
+          <CardTitle>{player.name}</CardTitle>
+          <CardDescription>
+            Has {player.decks.length}{" "}
+            {player.decks.length === 1 ? "deck" : "decks"}
+          </CardDescription>
+          <CardAction>
+            <ArrowRight />
+          </CardAction>
+        </CardHeader>
+      </Card>
     </Link>
   )
 }

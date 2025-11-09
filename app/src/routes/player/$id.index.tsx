@@ -33,7 +33,7 @@ function RouteComponent() {
       <Link to={"/player/$id/deck"} params={{ id: player.id }}>
         <Button className="self-start"> Add deck (WIP)</Button>
       </Link>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         {playerHasDecks &&
           player.decks.map((deck, index) => (
             <DeckCard

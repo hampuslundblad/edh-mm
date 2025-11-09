@@ -4,6 +4,15 @@ import { CreatePlayerModal } from "./-components/CreatePlayerModal"
 import { useAllPlayers } from "@/hooks/useAllPlayers"
 import Layout from "@/components/Layout"
 import { getHeaderTitle } from "@/utils/meta"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 export const Route = createFileRoute("/players/")({
   head: () => getHeaderTitle("Players"),
@@ -32,6 +41,7 @@ function App() {
             <PlayerLink player={player} key={player.id} />
           ))}
         </div>
+
         <CreatePlayerModal />
       </div>
     )

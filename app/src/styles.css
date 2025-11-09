@@ -115,6 +115,9 @@ code {
   --highlight: oklch(1 0 65);
   --border-primary: oklch(0.6 0 65);
   --border-muted: oklch(0.7 0 65);
+
+  --gradient: linear-gradient(0deg, var(--bg) 97%, var(--bg-light));
+  --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
 }
 
 .dark {
@@ -166,7 +169,9 @@ code {
   --highlight: oklch(0.5 0 65);
   --border-primary: oklch(0.4 0 65);
   --border-muted: oklch(0.3 0 65);
+
   --gradient: linear-gradient(0deg, var(--bg) 97%, var(--bg-light));
+  --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
 }
 
 @layer base {
