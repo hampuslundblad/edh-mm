@@ -9,7 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-export const PlayerLink = ({ player }: { player: Player }) => {
+export const PlayerLink = ({
+  player,
+}: {
+  player: Pick<Player, "id" | "name" | "decks">
+}) => {
   return (
     <Link
       className="self-start"

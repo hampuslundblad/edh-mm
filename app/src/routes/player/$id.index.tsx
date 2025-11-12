@@ -38,7 +38,7 @@ function RouteComponent() {
           player.decks.map((deck, index) => (
             <DeckCard
               key={index}
-              deckId={deck.id}
+              id={deck.id}
               name={deck.name}
               bracket={deck.bracket}
               isActive={deck.isActive}

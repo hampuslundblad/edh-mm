@@ -1,4 +1,5 @@
 import { EditIconLink } from "./EditIcon"
+import type { Deck } from "@/api/player"
 import {
   Card,
   CardAction,
@@ -7,28 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-type DeckCardProps = {
+type DeckCardProps = Pick<Deck, "id" | "name" | "bracket" | "isActive"> & {
   playerId: string
-  deckId: string
-  name: string
-  bracket: string
-  isActive: boolean
 }
 
-export const DeckCard = ({
-  playerId,
-  deckId,
-  name,
-  bracket,
-}: DeckCardProps) => {
-  // const [isChecked, setIsChecked] = useState(isActive)
+export const DeckCard = ({ playerId, id, name, bracket }: DeckCardProps) => {
   return (
     <Card className="lg:md:w-1/4">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>Bracket: {bracket}</CardDescription>
         <CardAction>
-          <EditIconLink playerId={playerId} deckId={deckId} />
+          <EditIconLink playerId={playerId} deckId={id} />
         </CardAction>
       </CardHeader>
     </Card>
