@@ -9,6 +9,14 @@ import { Label } from "@/components/ui/label"
 import { Bracket } from "@/utils/decks"
 import { useAddDeck } from "@/hooks/useAddDeck"
 import Back from "@/components/Back"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import Layout from "@/components/Layout"
 
 export const Route = createFileRoute("/player/$id/deck")({
   component: RouteComponent,
@@ -47,30 +55,41 @@ function RouteComponent() {
   }, [addDeckMutation.isSuccess, addDeckMutation.isError])
 
   return (
-    <div className="flex flex-col gap-4 p-2 items-center">
-      <Back />
-      <h2> Create deck </h2>
-      <div className="flex flex-col gap-2">
-        <Label>Deck Name</Label>
-        <Input
-          className="self-start"
-          value={deckName}
-          onChange={(e) => setDeckName(e.target.value)}
-        />
-
-        <Label>Bracket</Label>
-        <BracketSelect
-          selectedBracket={selectedBracket}
-          onSelect={setSelectedBracket}
-        />
-        <Button
-          disabled={!isInputValid}
-          onClick={handleAddDeck}
-          className="self-start mt-4"
-        >
-          Create Deck
-        </Button>
+    <Layout>
+      <div className="lg:md:w-1/2 mt-4 flex flex-col gap-6">
+        <Back />
+        <Card className="flex flex-col gap-2">
+          <CardHeader>
+            <CardTitle>Create a new deck</CardTitle>
+          </CardHeader>
+          <CardContent className="mt-8 flex flex-col gap-6">
+            <div>
+              <Label className="mb-4">Deck Name</Label>
+              <Input
+                className="w-1/3 self-start"
+                value={deckName}
+                onChange={(e) => setDeckName(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label className="mb-4">Bracket</Label>
+              <BracketSelect
+                selectedBracket={selectedBracket}
+                onSelect={setSelectedBracket}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button
+              disabled={!isInputValid}
+              onClick={handleAddDeck}
+              className="self-start mt-4"
+            >
+              Create Deck
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
-    </div>
+    </Layout>
   )
 }
