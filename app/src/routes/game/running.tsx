@@ -12,10 +12,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import Layout from "@/components/Layout"
 import { getHeaderTitle } from "@/utils/meta"
+import { ConfirmationModal } from "@/components/ConfirmationModal"
 
 export const Route = createFileRoute("/game/running")({
   head: () => getHeaderTitle("Running Games"),
@@ -36,7 +36,6 @@ function RouteComponent() {
       toast.success("Game cancelled successfully")
     } catch (cancelError) {
       toast.error("Failed to cancel game")
-      console.error("Error cancelling game:", cancelError)
     }
   }
 
@@ -107,14 +106,12 @@ function RouteComponent() {
             </TableCell>
             <TableCell>
               {/* Actions  */}
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => handleCancelGame(game.id)}
-                disabled={cancelGameMutation.isPending}
-              >
-                {cancelGameMutation.isPending ? "Cancelling..." : "Cancel Game"}
-              </Button>
+              <ConfirmationModal
+                onConfirm={() => handleCancelGame(game.id)}
+                description={`Are you sure you want to cancel game ${game.id}`}
+                modalTriggerText={"Cancel game"}
+                triggerVariant={"destructive"}
+              />
               <Link to="/game/$gameId" params={{ gameId: game.id }}>
                 <ArrowRight className="ml-2 inline-block" />
               </Link>

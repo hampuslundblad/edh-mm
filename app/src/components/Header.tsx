@@ -94,6 +94,7 @@ const HeaderLink = ({
       className="block p-2 rounded-md hover:underline   md:inline-block"
       activeProps={{ className: "underline" }}
       onClick={onClick}
+      preload={false}
     >
       {children}
     </Link>

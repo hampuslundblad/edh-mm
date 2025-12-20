@@ -85,8 +85,6 @@ function RouteComponent() {
   }
 
   const handleStartGame = () => {
-    console.log("Starting game with decks:", playerDeckSelection)
-
     const allPlayersHaveDecks = selectedPlayers.every((player) =>
       playerDeckSelection.some((selection) => selection.playerId === player.id),
     )
