@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute } from "@tanstack/react-router"
 import { toast } from "sonner"
+import { ArrowRight } from "lucide-react"
 import { useRunningGames } from "@/hooks/game/useRunningGames"
 import { useCancelGame } from "@/hooks/game/useCancelGame"
 import {
@@ -105,6 +106,7 @@ function RouteComponent() {
               {new Date(game.createdAt).toLocaleDateString()}
             </TableCell>
             <TableCell>
+              {/* Actions  */}
               <Button
                 variant="destructive"
                 size="sm"
@@ -113,6 +115,9 @@ function RouteComponent() {
               >
                 {cancelGameMutation.isPending ? "Cancelling..." : "Cancel Game"}
               </Button>
+              <Link to="/game/$gameId" params={{ gameId: game.id }}>
+                <ArrowRight className="ml-2 inline-block" />
+              </Link>
             </TableCell>
           </TableRow>
         ))}

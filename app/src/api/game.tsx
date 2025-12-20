@@ -133,4 +133,15 @@ export const GameApi = {
     }
     return response.json()
   },
+  deleteGame: async (gameId: string): Promise<void> => {
+    const response = await fetch(`/api/game/${gameId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if (!response.ok) {
+      throw new Error("Unable to delete game")
+    }
+  },
 }

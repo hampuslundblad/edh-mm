@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { PlayerLink } from "./-components/PlayerLink"
 import { CreatePlayerModal } from "./-components/CreatePlayerModal"
-import { useAllPlayers } from "@/hooks/useAllPlayers"
+import { useAllPlayers } from "@/hooks/player/useAllPlayers"
 import Layout from "@/components/Layout"
 import { getHeaderTitle } from "@/utils/meta"
 

@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { useDeletePlayer } from "@/hooks/useDeletePlayer"
+import { useDeletePlayer } from "@/hooks/player/useDeletePlayer"
 import {
   Dialog,
   DialogContent,

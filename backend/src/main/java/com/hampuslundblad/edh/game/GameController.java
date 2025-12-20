@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.hampuslundblad.edh.game.dto.CreateGameRequest;
 import com.hampuslundblad.edh.game.dto.FinishGameRequest;
 import com.hampuslundblad.edh.game.dto.GameResponse;
+import com.hampuslundblad.edh.game.exceptions.GameNotFoundException;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -55,8 +56,8 @@ public class GameController {
     @GetMapping("/game/{gameId}")
     public ResponseEntity<GameResponse> getGameById(@PathVariable Long gameId) {
         return gameService.getGameById(gameId)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/game/{gameId}/finish")
@@ -69,6 +70,9 @@ public class GameController {
 
     @PatchMapping("/game/{gameId}/cancel")
     public ResponseEntity<GameResponse> cancelGame(@PathVariable Long gameId) {
+        if (gameId == null) {
+            return ResponseEntity.badRequest().build();
+        }
         try {
             GameResponse game = gameService.cancelGame(gameId);
             return ResponseEntity.ok(game);
@@ -79,8 +83,26 @@ public class GameController {
 
     @PatchMapping("/game/{gameId}/update-round")
     public ResponseEntity<GameResponse> updateRound(@PathVariable Long gameId, @RequestParam int newRound) {
+        if (gameId == null || newRound < 1) {
+            return ResponseEntity.badRequest().build();
+        }
         GameResponse game = gameService.updateRound(gameId, newRound);
         return ResponseEntity.ok(game);
     }
-}
 
+    @DeleteMapping("/game/{gameId}")
+    public ResponseEntity<Void> deleteGame(@PathVariable Long gameId) {
+        try {
+            gameService.deleteGame(gameId);
+            return ResponseEntity.noContent().build();
+        } catch (GameNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+}

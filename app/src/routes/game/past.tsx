@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { useMutation } from "@tanstack/react-query"
+import { useEffect } from "react"
+import { toast } from "sonner"
 import { useFinishedGames } from "@/hooks/game/useFinishedGames"
 import {
   Table,
@@ -12,6 +15,10 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import Layout from "@/components/Layout"
 import { getHeaderTitle } from "@/utils/meta"
+import { Button } from "@/components/ui/button"
+import { deleteGameOptions } from "@/hooks/game/options"
+import { queryClient } from "@/queryClient"
+import { ConfirmationModal } from "@/components/ConfirmationModal"
 
 export const Route = createFileRoute("/game/past")({
   head: () => getHeaderTitle("Past Games"),
@@ -24,9 +31,28 @@ export const Route = createFileRoute("/game/past")({
 })
 
 function RouteComponent() {
-  const { data: finishedGames, isLoading, error } = useFinishedGames()
+  const {
+    data: finishedGames,
+    isLoading: isFinishedGameLoading,
+    error: finishedGameError,
+  } = useFinishedGames()
 
-  if (isLoading) {
+  const deleteGameMutation = useMutation(deleteGameOptions())
+
+  useEffect(() => {
+    if (deleteGameMutation.isError) {
+      toast.error("Unable to delete game")
+    } else if (deleteGameMutation.isSuccess) {
+      toast.success("Game was deleted")
+      queryClient.invalidateQueries({ queryKey: ["games", "finished"] })
+    }
+  }, [deleteGameMutation.isError, deleteGameMutation.isSuccess])
+
+  const handleDeleteGame = (gameId: string) => {
+    deleteGameMutation.mutate(gameId)
+  }
+
+  if (isFinishedGameLoading) {
     return (
       <div className="container mx-auto py-8">
         <div className="space-y-4">
@@ -38,11 +64,11 @@ function RouteComponent() {
     )
   }
 
-  if (error) {
+  if (finishedGameError) {
     return (
       <div className="container mx-auto py-8">
         <div className="text-red-500">
-          Error loading finished games: {error.message}
+          Error loading finished games: {finishedGameError.message}
         </div>
       </div>
     )
@@ -66,6 +92,7 @@ function RouteComponent() {
           <TableHead>Other decks</TableHead>
           <TableHead>Rounds</TableHead>
           <TableHead>Played</TableHead>
+          <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -114,6 +141,20 @@ function RouteComponent() {
               {game.finishedAt
                 ? new Date(game.finishedAt).toLocaleDateString()
                 : "N/A"}
+            </TableCell>
+            <TableCell>
+              <Button
+                onClick={() => handleDeleteGame(game.id)}
+                variant={"destructive"}
+              >
+                Remove Game
+              </Button>
+              <ConfirmationModal
+                triggerVariant={"destructive"}
+                onConfirm={() => handleDeleteGame(game.id)}
+                description={`Do you want to remove game ${game.id}`}
+                modalTriggerText={"Remove game"}
+              />
             </TableCell>
           </TableRow>
         ))}
