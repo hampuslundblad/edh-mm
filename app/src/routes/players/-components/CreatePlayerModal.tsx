@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useCreatePlayer } from "@/hooks/useCreatePlayer"
+import { useCreatePlayer } from "@/hooks/player/useCreatePlayer"
 import { Button } from "@/components/ui/button"
 
 export const CreatePlayerModal = () => {

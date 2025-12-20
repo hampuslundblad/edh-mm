@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { queryClient } from "@/queryClient"
 import { PlayersApi } from "@/api/player"
 import Back from "@/components/Back"
-import { useUpdateDeck } from "@/hooks/useUpdateDeck"
+import { useUpdateDeck } from "@/hooks/deck/useUpdateDeck"
 import {
   Card,
   CardContent,

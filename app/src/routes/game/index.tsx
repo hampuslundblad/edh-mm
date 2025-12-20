@@ -5,10 +5,10 @@ import { SelectPlayers } from "./-components/SelectPlayers"
 import SelectPlayerDeck from "./-components/SelectPlayerDeck"
 import type { Player } from "@/api/player"
 import Layout from "@/components/Layout"
-import { useAllPlayers } from "@/hooks/useAllPlayers"
+import { useAllPlayers } from "@/hooks/player/useAllPlayers"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useGameMutations } from "@/hooks/useGameMutations"
+import { useGameMutations } from "@/hooks/game/useGameMutations"
 
 export const Route = createFileRoute("/game/")({
   component: () => (

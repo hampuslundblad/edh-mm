@@ -10,7 +10,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { useAllPlayers } from "@/hooks/useAllPlayers"
+import { useAllPlayers } from "@/hooks/player/useAllPlayers"
 import BracketSelect from "@/components/BracketSelect"
 import Layout from "@/components/Layout"
 

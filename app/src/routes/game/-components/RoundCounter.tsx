@@ -1,6 +1,6 @@
 import { MinusIcon, PlusIcon } from "lucide-react"
 import { useState } from "react"
-import { useGameMutations } from "@/hooks/useGameMutations"
+import { useGameMutations } from "@/hooks/game/useGameMutations"
 
 type RoundCounterProps = {
   gameId: string

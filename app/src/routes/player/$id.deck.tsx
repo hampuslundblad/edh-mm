@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Bracket } from "@/utils/decks"
-import { useAddDeck } from "@/hooks/useAddDeck"
+import { useAddDeck } from "@/hooks/deck/useAddDeck"
 import Back from "@/components/Back"
 import {
   Card,

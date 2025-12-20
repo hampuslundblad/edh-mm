@@ -3,7 +3,7 @@ import { useState } from "react"
 import RoundCounter from "./-components/RoundCounter"
 import SinglePlayerSelect from "./-components/SinglePlayerSelect"
 import { Button } from "@/components/ui/button"
-import { useGameMutations } from "@/hooks/useGameMutations"
+import { useGameMutations } from "@/hooks/game/useGameMutations"
 import { useGameById } from "@/hooks/game/useGameById"
 
 export const Route = createFileRoute("/game/$gameId")({
