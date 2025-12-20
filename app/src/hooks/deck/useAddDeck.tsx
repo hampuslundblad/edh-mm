@@ -7,7 +7,3 @@ export const addDeckToPlayerOptions = {
     return PlayersApi.addDeckToPlayer(request)
   },
 }
-
-export const useAddDeck = () => {
-  return useMutation(addDeckToPlayerOptions)
-}

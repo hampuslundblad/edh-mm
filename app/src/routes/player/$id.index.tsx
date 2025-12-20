@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
-import { DeletePlayerModal } from "./-compopnents/DeletePlayerModal"
-import { DeckCard } from "./-compopnents/DeckCard"
+import { DeletePlayerModal } from "./-components/DeletePlayerModal"
+import { DeckCard } from "./-components/DeckCard"
 import type { GetPlayerResponse } from "@/api/player"
 import { PlayersApi } from "@/api/player"
 import { Button } from "@/components/ui/button"

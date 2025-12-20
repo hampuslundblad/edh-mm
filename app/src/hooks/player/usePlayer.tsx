@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { PlayersApi } from "@/api/player"
 
-export const getPlayerQueryOptions = (id: string) => ({
+export const getPlayerOptions = (id: string) => ({
   queryKey: ["players", id],
   queryFn: () => PlayersApi.getPlayerById(id),
   staleTime: 1000 * 60 * 5, // 5 minutes
@@ -10,5 +10,5 @@ export const getPlayerQueryOptions = (id: string) => ({
 })
 
 export const usePlayer = (id: string) => {
-  return useQuery(getPlayerQueryOptions(id))
+  return useQuery(getPlayerOptions(id))
 }

@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import BracketSelect from "@/components/BracketSelect"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Bracket } from "@/utils/decks"
-import { useAddDeck } from "@/hooks/deck/useAddDeck"
+import { addDeckToPlayerOptions } from "@/hooks/deck/useAddDeck"
 import Back from "@/components/Back"
 import {
   Card,
@@ -27,7 +27,7 @@ function RouteComponent() {
 
   const queryClient = useQueryClient()
 
-  const addDeckMutation = useAddDeck()
+  const addDeckMutation = useMutation(addDeckToPlayerOptions)
 
   const navigate = useNavigate({ from: "/player/$id/deck" })
 

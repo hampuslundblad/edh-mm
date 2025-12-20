@@ -7,7 +7,7 @@ export const useUpdateDeck = (playerId: string, deckId: string) => {
   const queryClient = useQueryClient()
 
   const updateDeckMutation = useMutation({
-    mutationFn: (request: {
+    mutationFn: async (request: {
       name?: string
       commander?: string
       bracket?: Bracket
@@ -30,13 +30,12 @@ export const useUpdateDeck = (playerId: string, deckId: string) => {
         })
       } else {
         // First fetch the current deck data, then update it.
-        return PlayersApi.getDeckById(playerId, deckId).then((currentDeck) => {
-          return PlayersApi.updateDeck(playerId, deckId, {
-            name: request.name ?? currentDeck.name,
-            commander: request.commander ?? currentDeck.commander,
-            bracket: request.bracket ?? currentDeck.bracket,
-            isActive: request.isActive ?? currentDeck.isActive,
-          })
+        const currentDeck = await PlayersApi.getDeckById(playerId, deckId)
+        return await PlayersApi.updateDeck(playerId, deckId, {
+          name: request.name ?? currentDeck.name,
+          commander: request.commander ?? currentDeck.commander,
+          bracket: request.bracket ?? currentDeck.bracket,
+          isActive: request.isActive ?? currentDeck.isActive,
         })
       }
     },

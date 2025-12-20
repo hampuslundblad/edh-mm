@@ -18,6 +18,8 @@ services:
       - "3000:3000"
   backend:
     image: ghcr.io/hampuslundblad/edh-mm-backend:main
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/edhmm
     volumes:
       - edhmm-db:/data
     ports:

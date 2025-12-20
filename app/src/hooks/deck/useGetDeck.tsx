@@ -8,7 +8,3 @@ export const getDeckOptions = (playerId: string, deckId: string) => ({
   retry: 1,
   enabled: !!deckId && !!playerId, // Only run the query if id is truthy
 })
-
-export const useGetDeck = (playerId: string, deckId: string) => {
-  return useQuery(getDeckOptions(playerId, deckId))
-}
