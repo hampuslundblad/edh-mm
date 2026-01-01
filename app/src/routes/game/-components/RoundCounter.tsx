@@ -1,5 +1,6 @@
 import { MinusIcon, PlusIcon } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
 import { useGameMutations } from "@/hooks/game/useGameMutations"
 
 type RoundCounterProps = {
@@ -11,6 +12,12 @@ const RoundCounter = ({ gameId, initialRound }: RoundCounterProps) => {
   const [roundCount, setRoundCount] = useState(initialRound)
 
   const { updateRoundMutation } = useGameMutations()
+
+  useEffect(() => {
+    if (updateRoundMutation.isError) {
+      toast.error("Unable to update round")
+    }
+  }, [updateRoundMutation.isError, updateRoundMutation.isSuccess])
 
   const handleRoundChange = (newRound: number) => {
     if (newRound < 1) return

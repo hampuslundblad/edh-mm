@@ -39,8 +39,6 @@ function RouteComponent() {
     addDeckMutation.mutate({ playerId: id, deckName, bracket: selectedBracket })
   }
 
-  console.log(selectedBracket)
-
   const isInputValid = deckName.length > 1
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useState } from "react"
 import RoundCounter from "./-components/RoundCounter"
 import SinglePlayerSelect from "./-components/SinglePlayerSelect"
+import { Timer } from "./-components/Timer"
 import { Button } from "@/components/ui/button"
 import { useGameMutations } from "@/hooks/game/useGameMutations"
 import { useGameById } from "@/hooks/game/useGameById"
@@ -37,9 +38,7 @@ function RouteComponent() {
   const handlePickWinner = () => {
     setShowGameEndScreen(true)
   }
-  console.log(gameData)
   const onSelectWinner = (playerId: string) => {
-    console.log(`Winning player ID: ${playerId}`)
     setSelectedPlayerId(playerId)
   }
 
@@ -74,6 +73,7 @@ function RouteComponent() {
       <Button size={"lg"} className="mt-16" onClick={handlePickWinner}>
         Go to pick winner
       </Button>
+      <Timer startedAt={gameData.createdAt} />
     </div>
   )
 }

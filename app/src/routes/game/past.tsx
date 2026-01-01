@@ -143,12 +143,6 @@ function RouteComponent() {
                 : "N/A"}
             </TableCell>
             <TableCell>
-              <Button
-                onClick={() => handleDeleteGame(game.id)}
-                variant={"destructive"}
-              >
-                Remove Game
-              </Button>
               <ConfirmationModal
                 triggerVariant={"destructive"}
                 onConfirm={() => handleDeleteGame(game.id)}
