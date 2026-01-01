@@ -1,6 +1,7 @@
 package com.hampuslundblad.edh.game;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class GameEntity {
 
     private Integer currentRound = 1;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now(ZoneId.of("UTC+1")); 
     private LocalDateTime finishedAt;
     
     private Long winnerPlayerId;

@@ -1,6 +1,7 @@
 package com.hampuslundblad.edh.game;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class Game {
         }
 
         return new Game(this.id, this.gamePlayers, GameStatus.FINISHED, 
-                       this.currentRound, this.createdAt, LocalDateTime.now(), winnerPlayerId);
+                       this.currentRound, this.createdAt, LocalDateTime.now(ZoneId.of("UTC+1")), winnerPlayerId);
     }
 
     public Game cancelGame() {
