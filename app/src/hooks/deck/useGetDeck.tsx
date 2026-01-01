@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query"
 import { PlayersApi } from "@/api/player"
 
 export const getDeckOptions = (playerId: string, deckId: string) => ({
