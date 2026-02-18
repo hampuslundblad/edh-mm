@@ -34,9 +34,70 @@ const hashHistory = createHashHistory()
 - Path alias: `@/` → `src/`
 
 ## Domain Model
-- **Player** → has many Decks (commander + bracket 1-4)
-- **Deck** → belongs to Player, has isActive flag
-- **Game** → matches with participants, rounds, status (RUNNING/FINISHED/CANCELLED)
+- **Player** → has many Decks; own domain package (`player/`) with controller, service, repo, entity, DTOs, exceptions
+- **Deck** → belongs to Player; own domain package (`deck/`) with entity, domain model, `Bracket` enum, exceptions
+- **Game** → own domain package (`game/`) with controller, service, repo, entity, join-table entity (`GamePlayerEntity`), DTOs, exceptions
+  - Bracket values: `ONE, TWO, THREE, THREE_PLUS, FOUR, FIVE`
+  - Game status values: `RUNNING, FINISHED, CANCELLED`
+  - Deck has `isActive` flag and `commander` field
+
+## Game Creation Flow
+
+### Frontend (`src/routes/game/index.tsx`)
+
+1. **Page load** — `useAllPlayers()` fetches all players (each with their full deck list) via TanStack Query. A skeleton is shown while loading.
+2. **Player selection** — `SelectPlayers` renders a multi-select dropdown. Removing a player also prunes their deck selection from state to keep things consistent.
+3. **Deck selection** — `SelectPlayerDeck` renders one `DeckSelect` per selected player. Each selection upserts into `playerDeckSelection[]` (update if that player already has a selection, append if not).
+4. **Validation** — "Start game!" button only renders once ≥1 player and ≥1 deck selection exist. On click, it verifies every selected player has a deck chosen; if not, a `sonner` toast error fires instead of submitting.
+5. **Mutation** — `createGameMutation.mutate({ playerDeckSelections: [...] })` from `useGameMutations`.
+
+### API Contract
+
+`POST /api/game`
+
+Request body:
+```json
+{
+  "playerDeckSelections": [
+    { "playerId": "1", "deckId": "5" },
+    { "playerId": "2", "deckId": "12" }
+  ]
+}
+```
+
+Response (`GameResponse`):
+```json
+{
+  "id": "7",
+  "players": [
+    { "playerId": "1", "playerName": "Alice", "deckId": "5", "deckName": "Atraxa", "commander": "Atraxa" }
+  ],
+  "status": "RUNNING",
+  "currentRound": 1,
+  "createdAt": "2026-02-18T20:00:00",
+  "finishedAt": null,
+  "winner": null
+}
+```
+
+> **ID type note:** The frontend represents all IDs as `string`; the backend `CreateGameRequest` uses `Long`. Jackson (Spring's JSON library) converts the numeric string to a `Long` automatically. If a non-numeric string were sent it would fail with `400`.
+
+### Backend (`GameController` → `GameService`)
+
+1. `POST /api/game` hits `GameController.createGame` — validates with `@Valid`, delegates to `GameService`, wraps any exception in a `400 Bad Request` (no `@ControllerAdvice` exists for the game domain).
+2. `GameService.createGame` (class-level `@Transactional`):
+   - Creates a blank `GameEntity` with defaults: `status=RUNNING`, `currentRound=1`, `createdAt=now`.
+   - For each `PlayerDeckSelection`: loads the `PlayerEntity` from the DB, then finds the matching `DeckEntity` from that player's own deck list — **enforcing deck ownership** (a player cannot be assigned a deck they don't own).
+   - Assembles `GamePlayerEntity` rows and sets them on the game, then saves (cascade persists all rows).
+3. **Two tables written per game created:**
+   - `game` — one row: `status`, `current_round`, `created_at`, `finished_at=null`, `winner_player_id=null`
+   - `game_player` — one row per participant: `game_id`, `player_id`, `deck_id`
+
+### Post-Success
+
+- TanStack Query invalidates `["games"]`, `["games","running"]`, and `["games","finished"]` caches.
+- `useEffect` watching `createGameMutation.isSuccess` navigates to `/game/$gameId` (the running game detail page).
+- On error, a `sonner` toast displays the error message.
 
 ## Critical Ports
 - Frontend: 3000

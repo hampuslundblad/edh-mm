@@ -1,6 +1,5 @@
 package com.hampuslundblad.edh.game;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +19,13 @@ import java.util.Optional;
 @Transactional
 public class GameService {
 
-    @Autowired
-    private GameRepository gameRepository;
+    private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
+        this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
+    }
 
     public GameResponse createGame(CreateGameRequest request) {
         // Convert to entity and save
@@ -39,7 +40,7 @@ public class GameService {
                             .findFirst()
                             .orElseThrow(() -> new RuntimeException("Deck not found: " + selection.deckId()));
 
-                    return new GamePlayerEntity(gameEntity, player, deck);
+                    return new GamePlayerEntity(gameEntity, player, deck, selection.turnOrder());
                 })
                 .toList();
 
@@ -166,7 +167,8 @@ public class GameService {
                         gp.getPlayerName(),
                         gp.getDeckId(),
                         gp.getDeckName(),
-                        gp.getCommander()))
+                        gp.getCommander(),
+                        gp.getTurnOrder()))
                 .toList();
 
         Optional<Game.GamePlayer> winner = game.getWinner();
@@ -178,7 +180,8 @@ public class GameService {
                     w.getPlayerName(),
                     w.getDeckId(),
                     w.getDeckName(),
-                    w.getCommander());
+                    w.getCommander(),
+                    w.getTurnOrder());
         }
 
         return new GameResponse(

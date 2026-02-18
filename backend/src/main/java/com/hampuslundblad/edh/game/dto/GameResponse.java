@@ -18,6 +18,7 @@ public record GameResponse(
         String playerName,
         Long deckId,
         String deckName,
-        String commander
+        String commander,
+        Integer turnOrder
     ) {}
 }
