@@ -7,6 +7,7 @@ public record CreateGameRequest(
 ) {
     public record PlayerDeckSelection(
         Long playerId,
-        Long deckId
+        Long deckId,
+        Integer turnOrder
     ) {}
 }

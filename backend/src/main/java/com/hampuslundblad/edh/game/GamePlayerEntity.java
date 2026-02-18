@@ -23,12 +23,16 @@ public class GamePlayerEntity {
     @JoinColumn(name = "deck_id", nullable = false)
     private DeckEntity deck;
 
+    @Column(name = "turn_order", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+    private Integer turnOrder;
+
     public GamePlayerEntity() {}
 
-    public GamePlayerEntity(GameEntity game, PlayerEntity player, DeckEntity deck) {
+    public GamePlayerEntity(GameEntity game, PlayerEntity player, DeckEntity deck, Integer turnOrder) {
         this.game = game;
         this.player = player;
         this.deck = deck;
+        this.turnOrder = turnOrder;
     }
 
     // Getters and Setters
@@ -43,4 +47,7 @@ public class GamePlayerEntity {
 
     public DeckEntity getDeck() { return deck; }
     public void setDeck(DeckEntity deck) { this.deck = deck; }
+
+    public Integer getTurnOrder() { return turnOrder; }
+    public void setTurnOrder(Integer turnOrder) { this.turnOrder = turnOrder; }
 }

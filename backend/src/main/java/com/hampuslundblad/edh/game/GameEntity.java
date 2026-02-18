@@ -45,7 +45,8 @@ public class GameEntity {
                 gpe.getPlayer().getName(),
                 gpe.getDeck().getId(),
                 gpe.getDeck().getName(),
-                gpe.getDeck().getCommander()
+                gpe.getDeck().getCommander(),
+                gpe.getTurnOrder()
             ))
             .collect(Collectors.toList());
 

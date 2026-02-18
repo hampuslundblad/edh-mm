@@ -5,6 +5,7 @@ export type GameStatus = "RUNNING" | "FINISHED" | "CANCELLED"
 export type PlayerDeckSelection = {
   playerId: string
   deckId: string
+  turnOrder: number
 }
 
 export type CreateGameRequest = {
@@ -21,6 +22,7 @@ export type GamePlayerResponse = {
   deckId: string
   deckName: string
   commander: string
+  turnOrder: number
 }
 
 export type GameResponse = {

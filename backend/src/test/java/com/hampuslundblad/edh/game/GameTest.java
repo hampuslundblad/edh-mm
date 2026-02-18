@@ -12,8 +12,8 @@ class GameTest {
     void createNew_shouldCreateRunningGameWithRound1() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1"),
-            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1),
+            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2", 2)
         );
 
         // When
@@ -30,8 +30,8 @@ class GameTest {
     void finishGame_shouldSetStatusToFinishedAndSetWinner() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1"),
-            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1),
+            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2", 2)
         );
         Game game = Game.createNew(players);
 
@@ -48,7 +48,7 @@ class GameTest {
     void cancelGame_shouldSetStatusToCancelled() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
         );
         Game game = Game.createNew(players);
 
@@ -65,7 +65,7 @@ class GameTest {
     void updateRound_shouldUpdateCurrentRound() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
         );
         Game game = Game.createNew(players);
 
@@ -81,8 +81,8 @@ class GameTest {
     void getWinner_shouldReturnWinnerWhenSet() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1"),
-            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1),
+            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2", 2)
         );
         Game game = Game.createNew(players).finishGame(1L);
 
@@ -98,7 +98,7 @@ class GameTest {
     void isRunning_shouldReturnTrueForNewGame() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
         );
         Game game = Game.createNew(players);
 
@@ -112,9 +112,9 @@ class GameTest {
     void getPlayerCount_shouldReturnNumberOfPlayers() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1"),
-            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2"),
-            new Game.GamePlayer(3L, "Player3", 3L, "Deck3", "Commander3")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1),
+            new Game.GamePlayer(2L, "Player2", 2L, "Deck2", "Commander2", 2),
+            new Game.GamePlayer(3L, "Player3", 3L, "Deck3", "Commander3", 3)
         );
         Game game = Game.createNew(players);
 
@@ -126,12 +126,60 @@ class GameTest {
     void hasPlayer_shouldReturnTrueWhenPlayerExists() {
         // Given
         List<Game.GamePlayer> players = List.of(
-            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1")
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
         );
         Game game = Game.createNew(players);
 
         // When & Then
         assertTrue(game.hasPlayer(1L));
         assertFalse(game.hasPlayer(999L));
+    }
+
+    @Test
+    void finishGame_shouldThrow_whenWinnerNotInGame() {
+        // Given
+        List<Game.GamePlayer> players = List.of(
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
+        );
+        Game game = Game.createNew(players);
+
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> game.finishGame(99L));
+    }
+
+    @Test
+    void finishGame_shouldThrow_whenAlreadyFinished() {
+        // Given
+        List<Game.GamePlayer> players = List.of(
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
+        );
+        Game game = Game.createNew(players).finishGame(1L);
+
+        // When & Then
+        assertThrows(IllegalStateException.class, () -> game.finishGame(1L));
+    }
+
+    @Test
+    void cancelGame_shouldThrow_whenAlreadyFinished() {
+        // Given
+        List<Game.GamePlayer> players = List.of(
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
+        );
+        Game game = Game.createNew(players).finishGame(1L);
+
+        // When & Then
+        assertThrows(IllegalStateException.class, () -> game.cancelGame());
+    }
+
+    @Test
+    void updateRound_shouldThrow_whenGameIsNotRunning() {
+        // Given
+        List<Game.GamePlayer> players = List.of(
+            new Game.GamePlayer(1L, "Player1", 1L, "Deck1", "Commander1", 1)
+        );
+        Game game = Game.createNew(players).finishGame(1L);
+
+        // When & Then
+        assertThrows(IllegalStateException.class, () -> game.updateRound(2));
     }
 }
