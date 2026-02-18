@@ -102,7 +102,6 @@ function RouteComponent() {
               <div className="flex flex-wrap gap-1">
                 {/** Show the players in the game in alphabetical order */}
                 {game.players
-                  .slice()
                   .sort((a, b) => a.playerName.localeCompare(b.playerName))
                   .map((player) => (
                     <Badge key={player.playerId} variant="outline">
@@ -134,6 +133,7 @@ function RouteComponent() {
                   </Badge>
                 ))}
             </TableCell>
+            {/** Rounds */}
             <TableCell>{game.currentRound}</TableCell>
 
             <TableCell>
