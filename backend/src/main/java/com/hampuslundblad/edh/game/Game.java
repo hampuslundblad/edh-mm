@@ -126,14 +126,16 @@ public class Game {
         private final Long deckId;
         private final String deckName;
         private final String commander;
+        private final Integer turnOrder;
 
-        public GamePlayer(Long playerId, String playerName, Long deckId, 
-                         String deckName, String commander) {
+        public GamePlayer(Long playerId, String playerName, Long deckId,
+                         String deckName, String commander, Integer turnOrder) {
             this.playerId = playerId;
             this.playerName = playerName;
             this.deckId = deckId;
             this.deckName = deckName;
             this.commander = commander;
+            this.turnOrder = turnOrder;
         }
 
         // Getters
@@ -142,5 +144,6 @@ public class Game {
         public Long getDeckId() { return deckId; }
         public String getDeckName() { return deckName; }
         public String getCommander() { return commander; }
+        public Integer getTurnOrder() { return turnOrder; }
     }
 }

@@ -3,13 +3,18 @@ package com.hampuslundblad.edh.game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.hampuslundblad.edh.deck.DeckEntity;
+import com.hampuslundblad.edh.game.dto.CreateGameRequest;
 import com.hampuslundblad.edh.game.dto.GameResponse;
+import com.hampuslundblad.edh.player.PlayerEntity;
 import com.hampuslundblad.edh.player.PlayerRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class GameServiceTest {
@@ -22,21 +27,10 @@ class GameServiceTest {
     void setUp() {
         gameRepository = mock(GameRepository.class);
         playerRepository = mock(PlayerRepository.class);
-        gameService = new GameService();
-        // Manually inject dependencies using reflection or setter methods
-        // Since GameService uses @Autowired, we'll set the fields directly
-        try {
-            var gameRepoField = GameService.class.getDeclaredField("gameRepository");
-            gameRepoField.setAccessible(true);
-            gameRepoField.set(gameService, gameRepository);
-            
-            var playerRepoField = GameService.class.getDeclaredField("playerRepository");
-            playerRepoField.setAccessible(true);
-            playerRepoField.set(gameService, playerRepository);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to inject mocks", e);
-        }
+        gameService = new GameService(gameRepository, playerRepository);
     }
+
+    // --- getAllGames ---
 
     @Test
     void getAllGames_shouldReturnAllGames() {
@@ -50,6 +44,8 @@ class GameServiceTest {
         assertNotNull(games);
         verify(gameRepository).findAllOrderByCreatedAtDesc();
     }
+
+    // --- getRunningGames ---
 
     @Test
     void getRunningGames_shouldReturnOnlyRunningGames() {
@@ -65,6 +61,8 @@ class GameServiceTest {
         verify(gameRepository).findByStatusOrderByCreatedAtDesc(GameStatus.RUNNING);
     }
 
+    // --- getFinishedGames ---
+
     @Test
     void getFinishedGames_shouldReturnOnlyFinishedGames() {
         // Given
@@ -78,6 +76,8 @@ class GameServiceTest {
         assertNotNull(games);
         verify(gameRepository).findByStatusOrderByCreatedAtDesc(GameStatus.FINISHED);
     }
+
+    // --- getCancelledGames ---
 
     @Test
     void getCancelledGames_shouldReturnOnlyCancelledGames() {
@@ -93,6 +93,8 @@ class GameServiceTest {
         verify(gameRepository).findByStatusOrderByCreatedAtDesc(GameStatus.CANCELLED);
     }
 
+    // --- getGameById ---
+
     @Test
     void getGameById_shouldReturnEmptyWhenNotFound() {
         // Given
@@ -106,6 +108,8 @@ class GameServiceTest {
         verify(gameRepository).findById(1L);
     }
 
+    // --- finishGame ---
+
     @Test
     void finishGame_shouldThrowWhenGameNotFound() {
         // Given
@@ -114,6 +118,8 @@ class GameServiceTest {
         // When & Then
         assertThrows(RuntimeException.class, () -> gameService.finishGame(1L, 1L));
     }
+
+    // --- cancelGame ---
 
     @Test
     void cancelGame_shouldThrowWhenGameNotFound() {
@@ -124,6 +130,8 @@ class GameServiceTest {
         assertThrows(RuntimeException.class, () -> gameService.cancelGame(1L));
     }
 
+    // --- updateRound ---
+
     @Test
     void updateRound_shouldThrowWhenGameNotFound() {
         // Given
@@ -131,5 +139,77 @@ class GameServiceTest {
 
         // When & Then
         assertThrows(RuntimeException.class, () -> gameService.updateRound(1L, 5));
+    }
+
+    // --- createGame ---
+
+    @Test
+    void createGame_shouldReturnGameResponse_whenValid() {
+        // Given
+        DeckEntity deck = new DeckEntity("Atraxa", "Atraxa", null);
+        deck.setId(5L);
+
+        PlayerEntity player = new PlayerEntity("Alice", new ArrayList<>(List.of(deck)));
+        player.setId(1L);
+
+        when(playerRepository.findById(1L)).thenReturn(Optional.of(player));
+        when(gameRepository.save(any(GameEntity.class))).thenAnswer(invocation -> {
+            GameEntity saved = invocation.getArgument(0);
+            saved.setId(7L);
+            return saved;
+        });
+
+        CreateGameRequest request = new CreateGameRequest(List.of(
+            new CreateGameRequest.PlayerDeckSelection(1L, 5L, 1)
+        ));
+
+        // When
+        GameResponse response = gameService.createGame(request);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(7L, response.id());
+        assertEquals(GameStatus.RUNNING, response.status());
+        assertEquals(1, response.currentRound());
+        assertEquals(1, response.players().size());
+        assertEquals("Alice", response.players().get(0).playerName());
+        assertEquals("Atraxa", response.players().get(0).deckName());
+        assertEquals(1, response.players().get(0).turnOrder());
+        verify(gameRepository).save(any(GameEntity.class));
+    }
+
+    @Test
+    void createGame_shouldThrow_whenPlayerNotFound() {
+        // Given
+        when(playerRepository.findById(99L)).thenReturn(Optional.empty());
+
+        CreateGameRequest request = new CreateGameRequest(List.of(
+            new CreateGameRequest.PlayerDeckSelection(99L, 1L, 1)
+        ));
+
+        // When & Then
+        assertThrows(RuntimeException.class, () -> gameService.createGame(request));
+        verify(gameRepository, never()).save(any());
+    }
+
+    @Test
+    void createGame_shouldThrow_whenDeckNotOwnedByPlayer() {
+        // Given
+        DeckEntity deck = new DeckEntity("Atraxa", "Atraxa", null);
+        deck.setId(5L);
+
+        PlayerEntity player = new PlayerEntity("Alice", new ArrayList<>(List.of(deck)));
+        player.setId(1L);
+
+        when(playerRepository.findById(1L)).thenReturn(Optional.of(player));
+
+        // Request uses a deck ID that the player does not own
+        CreateGameRequest request = new CreateGameRequest(List.of(
+            new CreateGameRequest.PlayerDeckSelection(1L, 999L, 1)
+        ));
+
+        // When & Then
+        assertThrows(RuntimeException.class, () -> gameService.createGame(request));
+        verify(gameRepository, never()).save(any());
     }
 }
