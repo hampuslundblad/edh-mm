@@ -61,7 +61,7 @@ game/
 - Validation: Jakarta annotations (`@Valid`, `@NotBlank`)
 - Responses: `ResponseEntity.ok()`, `.noContent().build()`, etc.
 - Controllers: `@RestController @RequestMapping("/api")`
-- Injection: Prefer constructor injection (note: `GameService` uses field injection — inconsistency)
+- Injection: Prefer constructor injection (e.g. `GameService` uses constructor injection)
 
 ## Testing
 - JUnit 5 + Mockito for unit tests; `@WebMvcTest` + `@MockBean` for controller slice tests
