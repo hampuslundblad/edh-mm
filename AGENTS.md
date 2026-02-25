@@ -91,7 +91,7 @@ Response (`GameResponse`):
    - Assembles `GamePlayerEntity` rows and sets them on the game, then saves (cascade persists all rows).
 3. **Two tables written per game created:**
    - `game` — one row: `status`, `current_round`, `created_at`, `finished_at=null`, `winner_player_id=null`
-   - `game_player` — one row per participant: `game_id`, `player_id`, `deck_id`
+   - `game_player` — one row per participant: `game_id`, `player_id`, `deck_id`, `turn_order` (integer turn position used to determine play order for the game)
 
 ### Post-Success
 
